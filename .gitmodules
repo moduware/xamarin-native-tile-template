@@ -1,0 +1,3 @@
+[submodule "PlatformCore"]
+	path = PlatformCore
+	url = git@github.com:nexpaq/platform-core.git
