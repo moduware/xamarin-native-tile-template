@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Core.ModuleDriverSystem", "PlatformCore\Platform.Core.ModuleDriverSystem\Platform.Core.ModuleDriverSystem.csproj", "{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Core.Utilities", "PlatformCore\Platform.Core.Utilities\Platform.Core.Utilities.csproj", "{13ECC31D-6AE2-42AA-AED9-655A1031C6F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{761839CB-7E21-461B-B03A-CA2523AEBEEE} = {761839CB-7E21-461B-B03A-CA2523AEBEEE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
