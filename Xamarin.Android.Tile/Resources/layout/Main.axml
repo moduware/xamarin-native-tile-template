@@ -2,6 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+    <TextView
+        android:text="Please enter RGB value to be used by LED modules"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+        <EditText
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/editText1"
+            android:width="140px"
+            android:text="255" />
+        <EditText
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/editText2"
+            android:text="0"
+            android:layout_marginRight="10px"
+            android:layout_marginLeft="10px"
+            android:width="140px" />
+        <EditText
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/editText3"
+            android:width="140px"
+            android:text="0" />
+    </LinearLayout>
+    <Button
+        android:text="Set Color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button1" />
 </LinearLayout>

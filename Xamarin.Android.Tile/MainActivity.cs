@@ -23,12 +23,40 @@ namespace Xamarin.Android.Tile
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            Core Core = null;
+
+            var ConfigButton = FindViewById<Button>(Resource.Id.button1);
+            var RedEditbox = FindViewById<EditText>(Resource.Id.editText1);
+            var GreenEditbox = FindViewById<EditText>(Resource.Id.editText2);
+            var BlueEditbox = FindViewById<EditText>(Resource.Id.editText3);
+
+            ConfigButton.Click += (source, e) =>
+            {
+                // getting color
+                var RedNumber = int.Parse(RedEditbox.Text);
+                var GreenNumber = int.Parse(GreenEditbox.Text);
+                var BlueNumber = int.Parse(BlueEditbox.Text);
+
+                // finding all LED modules
+                foreach(var module in Core.Gateways.List[0].Modules)
+                {
+                    if (module == null) continue;
+                    if (module.Manifest.TypeID == "nexpaq.module.led")
+                    {
+                        Core.API.Module.SendCommand(module.UUID, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
+                    }
+                }
+            };
+
+            
+
             Task.Run(() =>
             {
                 // Loading Platform Core
-                var Core = new Core(code => RunOnUiThread(code), PassiveMode: true, settings: new CoreSettings
+                Core = new Core(code => RunOnUiThread(code), PassiveMode: true, settings: new CoreSettings
                 {
                     RequestManifests = true,
+                    RequestModuleDrivers = true
                     // TODO: make this setting true by default, as it is used like this in both Tile and App
                 });
 
