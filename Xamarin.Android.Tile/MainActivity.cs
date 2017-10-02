@@ -5,10 +5,12 @@ using Plugin.BLE;
 using Platform.Core;
 using Serilog;
 using System.Threading.Tasks;
+using Platform.Core.CommonTypes;
 
 namespace Xamarin.Android.Tile
 {
     [Activity(Label = "Tile template", MainLauncher = true)]
+    [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -19,6 +21,23 @@ namespace Xamarin.Android.Tile
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.AndroidLog()
                 .CreateLogger();
+
+            var Arguments = new
+            {
+                TargetModuleUuid = Uuid.Empty,
+                TargetModuleSlot = -1,
+                TargetModuleType = string.Empty
+            };
+
+            if(Intent.Data != null && Intent.Data.Host == "index")
+            {
+                Arguments = new
+                {
+                    TargetModuleUuid = new Uuid(Intent.Data.GetQueryParameter("target-module-uuid")),
+                    TargetModuleSlot = int.Parse(Intent.Data.GetQueryParameter("target-module-slot")),
+                    TargetModuleType = Intent.Data.GetQueryParameter("target-module-type")
+                };
+            }
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
