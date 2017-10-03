@@ -6,6 +6,7 @@ using Platform.Core;
 using Serilog;
 using System.Threading.Tasks;
 using Platform.Core.CommonTypes;
+using Xamarin.Tile.Structs;
 
 namespace Xamarin.Android.Tile
 {
@@ -13,6 +14,8 @@ namespace Xamarin.Android.Tile
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : Activity
     {
+        public TileArguments Arguments = new TileArguments();
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -22,16 +25,9 @@ namespace Xamarin.Android.Tile
                 .WriteTo.AndroidLog()
                 .CreateLogger();
 
-            var Arguments = new
-            {
-                TargetModuleUuid = Uuid.Empty,
-                TargetModuleSlot = -1,
-                TargetModuleType = string.Empty
-            };
-
             if(Intent.Data != null && Intent.Data.Host == "index")
             {
-                Arguments = new
+                Arguments = new TileArguments
                 {
                     TargetModuleUuid = new Uuid(Intent.Data.GetQueryParameter("target-module-uuid")),
                     TargetModuleSlot = int.Parse(Intent.Data.GetQueryParameter("target-module-slot")),
@@ -69,7 +65,7 @@ namespace Xamarin.Android.Tile
 
             
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 // Loading Platform Core
                 Core = new Core(code => RunOnUiThread(code), PassiveMode: true, settings: new CoreSettings
@@ -82,7 +78,7 @@ namespace Xamarin.Android.Tile
                 Core.Error += (sender, e) => Log.Information("[PlatformCore] Error: " + e.Message);
 
                 // Searching for connected gateways
-                Core.Gateways.CheckConnected();
+                await Core.Gateways.CheckConnected();
             });
             
 
