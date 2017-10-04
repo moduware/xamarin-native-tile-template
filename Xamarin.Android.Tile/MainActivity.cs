@@ -7,9 +7,10 @@ using Serilog;
 using System.Threading.Tasks;
 using Platform.Core.CommonTypes;
 using Xamarin.Tile.Structs;
+using Android.Content;
 using System;
 
-namespace Xamarin.Android.Tile
+namespace XamarinAndroidTileTemplate
 {
     [Activity(Label = "Tile template", MainLauncher = true)]
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
@@ -30,6 +31,7 @@ namespace Xamarin.Android.Tile
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            var config = String.Empty;
             // Receiving arguments for tile
             if (Intent.Data != null)
             {
@@ -41,6 +43,13 @@ namespace Xamarin.Android.Tile
                         TargetModuleSlot = int.Parse(Intent.Data.GetQueryParameter("target-module-slot")),
                         TargetModuleType = Intent.Data.GetQueryParameter("target-module-type")
                     };
+
+                    config = Intent.Data.GetQueryParameter("current-configuration");
+                    // TODO: load current configuration using function created by Moemen
+                } else if(Intent.Data.Host == "configure")
+                {
+                    config = Intent.Data.GetQueryParameter("current-configuration");
+                    // TODO: load current configuration using function created by Moemen
                 }
             }
 
@@ -61,8 +70,14 @@ namespace Xamarin.Android.Tile
                     // let user know that there are no connected gateways and it is required to open Moduware app for connection
                     ShowNotConnectedAlert(() =>
                     {
-                        // TODO: open moduware application
+                        // open moduware application
+                        OpenDashboard();
                     });
+                } else if(config == String.Empty)
+                {
+                    // TODO: request moduware application for current configuration
+                    OpenDashboard("index?action=getConfiguration");
+                    // ? should we notify user about this or just do it silently ?
                 }
             });
 
@@ -146,6 +161,13 @@ namespace Xamarin.Android.Tile
             }
 
             return Uuid.Empty;
+        }
+
+        private void OpenDashboard(string request = "")
+        {
+            Intent intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("moduware.application.dashboard://" + request));
+            intent.AddFlags(ActivityFlags.NewTask);
+            StartActivity(intent);
         }
     }
 }
