@@ -16,7 +16,8 @@ namespace XamarinAndroidTileTemplate
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : Activity
     {
-        public TileArguments Arguments = new TileArguments();
+        private TileArguments Arguments = new TileArguments();
+        private string LaunchConfiguration = String.Empty;
         private Core Core;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -44,64 +45,81 @@ namespace XamarinAndroidTileTemplate
                         TargetModuleType = Intent.Data.GetQueryParameter("target-module-type")
                     };
 
-                    config = Intent.Data.GetQueryParameter("current-configuration");
+                    LaunchConfiguration = Intent.Data.GetQueryParameter("current-configuration");
                     // TODO: load current configuration using function created by Moemen
                 } else if(Intent.Data.Host == "configure")
                 {
-                    config = Intent.Data.GetQueryParameter("current-configuration");
+                    LaunchConfiguration = Intent.Data.GetQueryParameter("current-configuration");
                     // TODO: load current configuration using function created by Moemen
                 }
             }
 
             // Launching core in separate thread from UI
-            Task.Run(async () =>
-            {
+            //Task.Run(() =>
+            //{
                 // Loading Platform Core
                 Core = new Core(code => RunOnUiThread(code), PassiveMode: true);
                 // Handling errors happening in core of native tile
                 // TODO: Switch to new events manager instead
                 Core.Error += (sender, e) => Log.Information("[PlatformCore] Error: " + e.Message);
 
-                // Searching for connected gateways
-                var connected = await Core.Gateways.CheckConnected();
-
-                if(!connected)
-                {
-                    // let user know that there are no connected gateways and it is required to open Moduware app for connection
-                    ShowNotConnectedAlert(() =>
-                    {
-                        // open moduware application
-                        OpenDashboard();
-                    });
-                } else if(config == String.Empty)
-                {
-                    // TODO: request moduware application for current configuration
-                    OpenDashboard("index?action=getConfiguration");
-                    // ? should we notify user about this or just do it silently ?
-                }
-            });
-
+                
+            //});
 
             var ConfigButton = FindViewById<Button>(Resource.Id.button1);
+            ConfigButton.Click += ConfigButtonClickHandler;
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            if(Core.Gateways.List.Count == 0)
+            {
+                Task.Run(async () =>
+                {
+                    // Searching for connected gateways
+                    var connected = await Core.Gateways.CheckConnected();
+
+                    if (!connected)
+                    {
+                        // let user know that there are no connected gateways and it is required to open Moduware app for connection
+                        ShowNotConnectedAlert(() =>
+                        {
+                            // open moduware application
+                            OpenDashboard();
+                        });
+                    }
+                    else if (LaunchConfiguration == String.Empty)
+                    {
+                        RequestCurrentConfiguration();
+                    }
+                });
+            } else if (LaunchConfiguration == String.Empty)
+            {
+                RequestCurrentConfiguration();
+            }
+        }
+
+        private void ConfigButtonClickHandler(Object source, EventArgs e)
+        {
+            
             var RedEditbox = FindViewById<EditText>(Resource.Id.editText1);
             var GreenEditbox = FindViewById<EditText>(Resource.Id.editText2);
             var BlueEditbox = FindViewById<EditText>(Resource.Id.editText3);
 
-            ConfigButton.Click += (source, e) =>
+            // getting color
+            var RedNumber = int.Parse(RedEditbox.Text);
+            var GreenNumber = int.Parse(GreenEditbox.Text);
+            var BlueNumber = int.Parse(BlueEditbox.Text);
+
+            Uuid targetUuid = GetTargetModuleOrFirstOfType("nexpaq.module.led");
+
+            // Running command on found module
+            if (targetUuid != Uuid.Empty)
             {
-                // getting color
-                var RedNumber = int.Parse(RedEditbox.Text);
-                var GreenNumber = int.Parse(GreenEditbox.Text);
-                var BlueNumber = int.Parse(BlueEditbox.Text);
-
-                Uuid targetUuid = GetTargetModuleOrFirstOfType("nexpaq.module.led");
-
-                // Running command on found module
-                if (targetUuid != Uuid.Empty)
-                {
-                    Core.API.Module.SendCommand(targetUuid, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
-                }
-            };
+                Core.API.Module.SendCommand(targetUuid, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
+            }
         }
 
         private void ShowNotConnectedAlert(Action callback)
@@ -168,6 +186,13 @@ namespace XamarinAndroidTileTemplate
             Intent intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("moduware.application.dashboard://" + request));
             intent.AddFlags(ActivityFlags.NewTask);
             StartActivity(intent);
+        }
+
+        private void RequestCurrentConfiguration()
+        {
+            // TODO: request moduware application for current configuration
+            OpenDashboard("index?action=getConfiguration");
+            // ? should we notify user about this or just do it silently ?
         }
     }
 }
