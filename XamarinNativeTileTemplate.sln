@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Core.Utilities", "
 		{761839CB-7E21-461B-B03A-CA2523AEBEEE} = {761839CB-7E21-461B-B03A-CA2523AEBEEE}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Android.Tile", "Xamarin.Android.Tile\Xamarin.Android.Tile.csproj", "{34B46776-4231-4AAD-A2CB-F612369B40AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinAndroidTileTemplate", "Xamarin.Android.Tile\XamarinAndroidTileTemplate.csproj", "{34B46776-4231-4AAD-A2CB-F612369B40AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.iOS.Tile", "Xamarin.iOS.Tile\Xamarin.iOS.Tile.csproj", "{CC6CCA50-4C6E-4E2B-AD04-A54340F8C6E7}"
 EndProject

@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Xamarin.Android.Tile.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("XamarinAndroidTileTemplate.Resource", IsApplication=true)]
 
-namespace Xamarin.Android.Tile
+namespace XamarinAndroidTileTemplate
 {
 	
 	
@@ -26,8 +26,8 @@ namespace Xamarin.Android.Tile
 		
 		public static void UpdateIdValues()
 		{
-			global::PCLStorage.Resource.String.ApplicationName = global::Xamarin.Android.Tile.Resource.String.ApplicationName;
-			global::PCLStorage.Resource.String.Hello = global::Xamarin.Android.Tile.Resource.String.Hello;
+			global::PCLStorage.Resource.String.ApplicationName = global::XamarinAndroidTileTemplate.Resource.String.ApplicationName;
+			global::PCLStorage.Resource.String.Hello = global::XamarinAndroidTileTemplate.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
