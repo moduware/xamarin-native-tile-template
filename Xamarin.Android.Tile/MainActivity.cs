@@ -16,6 +16,8 @@ namespace XamarinAndroidTileTemplate
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : Activity
     {
+        public string tileId = "moduware.tile.led";
+
         private TileArguments Arguments = new TileArguments();
         private string LaunchConfiguration = String.Empty;
         private Core Core;
@@ -191,7 +193,7 @@ namespace XamarinAndroidTileTemplate
         private void RequestCurrentConfiguration()
         {
             // TODO: request moduware application for current configuration
-            OpenDashboard("index?action=getConfiguration");
+            OpenDashboard($"index?tile-id={tileId}&action=getConfiguration");
             // ? should we notify user about this or just do it silently ?
         }
     }
