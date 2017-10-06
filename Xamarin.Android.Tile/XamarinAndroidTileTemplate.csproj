@@ -120,6 +120,10 @@
       <Project>{761839cb-7e21-461b-b03a-ca2523aebeee}</Project>
       <Name>Platform.Core.CommonTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlatformCore\Platform.Core.ModuleDriverSystem\Platform.Core.ModuleDriverSystem.csproj">
+      <Project>{cc5f9c4d-19b0-489f-8b72-e90da017b4c0}</Project>
+      <Name>Platform.Core.ModuleDriverSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.Core\Platform.Core.csproj">
       <Project>{7f1129cf-95d1-45cd-811e-c2697c110d66}</Project>
       <Name>Platform.Core</Name>

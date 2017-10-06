@@ -12,14 +12,14 @@ using System;
 
 namespace XamarinAndroidTileTemplate
 {
-    [Activity(Label = "Tile template", MainLauncher = true)]
+    [Activity(Label = "Tile template", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleInstance)]
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : Activity
     {
         public string tileId = "moduware.tile.led";
 
         private TileArguments Arguments = new TileArguments();
-        private string LaunchConfiguration = String.Empty;
+        private string CurrentConfiguration = String.Empty;
         private Core Core;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -34,49 +34,37 @@ namespace XamarinAndroidTileTemplate
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            var config = String.Empty;
-            // Receiving arguments for tile
-            if (Intent.Data != null)
+            var ConfigButton = FindViewById<Button>(Resource.Id.button1);
+            ConfigButton.Click += ConfigButtonClickHandler;
+
+            FoundConnectedDevices += MainActivity_FoundConnectedDevices;
+
+            Task.Run(() =>
             {
-                if (Intent.Data.Host == "index")
-                {
-                    Arguments = new TileArguments
-                    {
-                        TargetModuleUuid = new Uuid(Intent.Data.GetQueryParameter("target-module-uuid")),
-                        TargetModuleSlot = int.Parse(Intent.Data.GetQueryParameter("target-module-slot")),
-                        TargetModuleType = Intent.Data.GetQueryParameter("target-module-type")
-                    };
-
-                    LaunchConfiguration = Intent.Data.GetQueryParameter("current-configuration");
-                    // TODO: load current configuration using function created by Moemen
-                } else if(Intent.Data.Host == "configure")
-                {
-                    LaunchConfiguration = Intent.Data.GetQueryParameter("current-configuration");
-                    // TODO: load current configuration using function created by Moemen
-                }
-            }
-
-            // Launching core in separate thread from UI
-            //Task.Run(() =>
-            //{
                 // Loading Platform Core
                 Core = new Core(code => RunOnUiThread(code), PassiveMode: true);
                 // Handling errors happening in core of native tile
                 // TODO: Switch to new events manager instead
                 Core.Error += (sender, e) => Log.Information("[PlatformCore] Error: " + e.Message);
+                Core.Gateways.GatewayConnected += (o, e) =>
+                {
+                    e.Gateway.Initialized += Gateway_Initialized;
+                };
 
-                
-            //});
-
-            var ConfigButton = FindViewById<Button>(Resource.Id.button1);
-            ConfigButton.Click += ConfigButtonClickHandler;
+                CheckConnectedGateways();
+            });
         }
 
         protected override void OnResume()
         {
             base.OnResume();
 
-            if(Core.Gateways.List.Count == 0)
+            if (Core != null && Core.Gateways.List.Count == 0)
+            {
+                CheckConnectedGateways();
+            }
+
+            /*if (Core.Gateways.List.Count == 0)
             {
                 Task.Run(async () =>
                 {
@@ -92,14 +80,89 @@ namespace XamarinAndroidTileTemplate
                             OpenDashboard();
                         });
                     }
-                    else if (LaunchConfiguration == String.Empty)
+                    else if (CurrentConfiguration == String.Empty)
                     {
-                        RequestCurrentConfiguration();
+                        //RequestCurrentConfiguration();
+                    } else
+                    {
+                        Core.API.MergeConfig(CurrentConfiguration);   
+                        // TODO: load current configuration using function created by Moemen
                     }
                 });
-            } else if (LaunchConfiguration == String.Empty)
+            } else if (CurrentConfiguration == String.Empty)
+            {
+                //RequestCurrentConfiguration();
+            } else
+            {
+                Core.API.MergeConfig(CurrentConfiguration);
+                // TODO: load current configuration using function created by Moemen
+            }*/
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            if (intent.Data != null)
+            {
+                if (intent.Data.Host == "index")
+                {
+                    Arguments = new TileArguments
+                    {
+                        TargetModuleUuid = new Uuid(intent.Data.GetQueryParameter("target-module-uuid")),
+                        TargetModuleSlot = int.Parse(intent.Data.GetQueryParameter("target-module-slot")),
+                        TargetModuleType = intent.Data.GetQueryParameter("target-module-type")
+                    };
+
+                    CurrentConfiguration = intent.Data.GetQueryParameter("current-configuration");
+                }
+                else if (intent.Data.Host == "configure")
+                {
+                    var configuration = intent.Data.GetQueryParameter("current-configuration");
+                    Core.API.MergeConfig(configuration);
+                }
+            }
+        }
+
+        private void CheckConnectedGateways()
+        {
+            Task.Run(async () =>
+            {
+                var connected = await Core.Gateways.CheckConnected();
+
+                if (connected)
+                {
+                    FoundConnectedDevices(this, EventArgs.Empty);
+                }
+
+                if (!connected)
+                {
+                    // let user know that there are no connected gateways and it is required to open Moduware app for connection
+                    ShowNotConnectedAlert(() =>
+                    {
+                        // open moduware application
+                        OpenDashboard();
+                    });
+                }
+            });
+        }
+
+        private void MainActivity_FoundConnectedDevices(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void Gateway_Initialized(object sender, EventArgs e)
+        {
+            // TODO: Checking if all gateways initialized
+            // For now we expect only one gateway
+            if(CurrentConfiguration == String.Empty)
             {
                 RequestCurrentConfiguration();
+            } else
+            {
+                Core.API.MergeConfig(CurrentConfiguration);
+                CurrentConfiguration = String.Empty;
             }
         }
 
@@ -120,6 +183,12 @@ namespace XamarinAndroidTileTemplate
             // Running command on found module
             if (targetUuid != Uuid.Empty)
             {
+                var module = Core.API.Module.GetByUUID(targetUuid);
+                if (module.Driver == null)
+                {
+                    Core.API.Driver.RestoreDefault(targetUuid);
+                }
+
                 Core.API.Module.SendCommand(targetUuid, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
             }
         }
@@ -196,6 +265,8 @@ namespace XamarinAndroidTileTemplate
             OpenDashboard($"index?tile-id={tileId}&action=getConfiguration");
             // ? should we notify user about this or just do it silently ?
         }
+
+        private event EventHandler FoundConnectedDevices = delegate { };
     }
 }
 
