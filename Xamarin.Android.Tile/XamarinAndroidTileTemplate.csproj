@@ -116,21 +116,21 @@
     <Folder Include="Resources\mipmap-xxxhdpi\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Platform.AndroidTile\Platform.Tile.Droid.csproj">
+      <Project>{55ae2db5-8f3c-4af2-819c-396850a05222}</Project>
+      <Name>Platform.Tile.Droid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.CommonTypes\Platform.Core.CommonTypes.csproj">
       <Project>{761839cb-7e21-461b-b03a-ca2523aebeee}</Project>
       <Name>Platform.Core.CommonTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlatformCore\Platform.Core.ModuleDriverSystem\Platform.Core.ModuleDriverSystem.csproj">
-      <Project>{cc5f9c4d-19b0-489f-8b72-e90da017b4c0}</Project>
-      <Name>Platform.Core.ModuleDriverSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.Core\Platform.Core.csproj">
       <Project>{7f1129cf-95d1-45cd-811e-c2697c110d66}</Project>
       <Name>Platform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xamarin.Tile\Xamarin.Tile.csproj">
+    <ProjectReference Include="..\Xamarin.Tile\Platform.Tile.Shared.csproj">
       <Project>{f3f36665-0ee6-4ccf-90fa-906457662fd4}</Project>
-      <Name>Xamarin.Tile</Name>
+      <Name>Platform.Tile.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

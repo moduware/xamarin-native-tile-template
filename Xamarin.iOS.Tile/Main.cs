@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace Xamarin.iOS.Tile
+namespace XamariniOSTileTemplate
 {
     public class Application
     {

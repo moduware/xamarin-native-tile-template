@@ -6,9 +6,9 @@
     <ProjectGuid>{CC6CCA50-4C6E-4E2B-AD04-A54340F8C6E7}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Xamarin.iOS.Tile</RootNamespace>
+    <RootNamespace>XamariniOSTileTemplate</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Xamarin.iOS.Tile</AssemblyName>
+    <AssemblyName>XamariniOSTileTemplate</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -92,8 +92,9 @@
     <Compile Include="RootViewController.designer.cs">
       <DependentUpon>RootViewController.cs</DependentUpon>
     </Compile>
-    <None Include="app.config" />
-    <None Include="GettingStarted.Xamarin" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />

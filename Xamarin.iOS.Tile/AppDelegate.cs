@@ -2,7 +2,7 @@
 using Serilog;
 using UIKit;
 
-namespace Xamarin.iOS.Tile
+namespace XamariniOSTileTemplate
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the
     // User Interface of the application, as well as listening (and optionally responding) to application events from iOS.

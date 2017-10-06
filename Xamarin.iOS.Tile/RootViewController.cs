@@ -6,7 +6,7 @@ using Plugin.BLE;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace Xamarin.iOS.Tile
+namespace XamariniOSTileTemplate
 {
     public partial class RootViewController : UIViewController
     {

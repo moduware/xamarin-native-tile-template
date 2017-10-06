@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Xamarin.iOS.Tile</string>
+	<string>XamariniOSTileTemplate</string>
 	<key>CFBundleIdentifier</key>
 	<string>moduware.xamarin.tile-template</string>
 	<key>CFBundleShortVersionString</key>

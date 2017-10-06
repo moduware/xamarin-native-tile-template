@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xamarin.Tile.Structs
+namespace Platfrom.Tile.Shared.Structs
 {
     /// <summary>
     /// Arguments are parameters tile was launched with was launched with
