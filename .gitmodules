@@ -1,3 +1,7 @@
 [submodule "PlatformCore"]
 	path = PlatformCore
 	url = git@github.com:nexpaq/platform-core.git
+[submodule "assassin-event-system"]
+	path = assassin-event-system
+	url = git@github.com:nexpaq/assassin-event-system.git
+	branch = develop

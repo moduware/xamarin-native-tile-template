@@ -14,14 +14,14 @@ using Platform.Tile.Droid;
 namespace XamarinAndroidTileTemplate
 {
     [Activity(Label = "Tile template", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleInstance)]
-    [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.tile-template", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
+    [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : TileActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            TileId = "moduware.tile.tile-template";
+            TileId = "moduware.tile.led";
 
             // Logger to output messages from PlatformCore to console
             Log.Logger = new LoggerConfiguration()

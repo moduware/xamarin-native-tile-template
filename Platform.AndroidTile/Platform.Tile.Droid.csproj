@@ -53,6 +53,10 @@
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
+      <Project>{7b328ddc-4013-4176-9954-3f410251ec88}</Project>
+      <Name>AssassinEventSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.CommonTypes\Platform.Core.CommonTypes.csproj">
       <Project>{761839cb-7e21-461b-b03a-ca2523aebeee}</Project>
       <Name>Platform.Core.CommonTypes</Name>
