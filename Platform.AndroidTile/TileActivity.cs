@@ -82,25 +82,6 @@ namespace Platform.Tile.Droid
                     // Loading configuration in core, merging known devices with information about them
                     var configuration = intent.Data.GetQueryParameter("current-configuration");
                     Core.API.MergeConfig(configuration);
-                    RestoreDrivers();
-                }
-            }
-        }
-
-        // TODO: no need in this function after core is fixed
-        /// <summary>
-        /// Function restores drivers for all modules, use after merging config
-        /// </summary>
-        private void RestoreDrivers()
-        {
-            foreach(var gateway in Core.Gateways.List)
-            {
-                foreach(var module in gateway.Modules)
-                {
-                    if(module != null && module.Driver == null && module.UUID != null)
-                    {
-                        Core.API.Driver.RestoreDefault(module.UUID);
-                    }
                 }
             }
         }

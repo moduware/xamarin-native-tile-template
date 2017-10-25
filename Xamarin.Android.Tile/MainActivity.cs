@@ -14,14 +14,14 @@ using Platform.Tile.Droid;
 namespace XamarinAndroidTileTemplate
 {
     [Activity(Label = "Tile template", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleInstance)]
-    [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
+    [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.led-dev", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
     public class MainActivity : TileActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            TileId = "moduware.tile.led";
+            TileId = "moduware.tile.led-dev";
 
             // Logger to output messages from PlatformCore to console
             Log.Logger = new LoggerConfiguration()
@@ -33,6 +33,9 @@ namespace XamarinAndroidTileTemplate
 
             var ConfigButton = FindViewById<Button>(Resource.Id.button1);
             ConfigButton.Click += ConfigButtonClickHandler;
+
+            var DashboardButton = FindViewById<Button>(Resource.Id.button2);
+            DashboardButton.Click += (s, e) => Utilities.OpenDashboard();
         }
 
         private void ConfigButtonClickHandler(Object source, EventArgs e)

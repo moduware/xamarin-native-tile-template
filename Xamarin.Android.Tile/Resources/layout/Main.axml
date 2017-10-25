@@ -3,6 +3,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <Button
+        android:text="Open Dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2" />
     <TextView
         android:text="Please enter RGB value to be used by LED modules"
         android:textAppearance="?android:attr/textAppearanceMedium"
