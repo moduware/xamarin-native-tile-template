@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using Platform.Tile.iOS;
 using Serilog;
 using UIKit;
 
@@ -36,6 +37,15 @@ namespace XamariniOSTileTemplate
             return true;
         }
 
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            // custom stuff here using different properties of the url passed in
+            var viewController = (TileViewController)Window.RootViewController;
+            viewController.OnQueryRecieved(url.AbsoluteString);
+
+            return true;
+        }
+
         public override void OnResignActivation(UIApplication application)
         {
             // Invoked when the application is about to move from active to inactive state.
@@ -60,6 +70,8 @@ namespace XamariniOSTileTemplate
         {
             // Restart any tasks that were paused (or not yet started) while the application was inactive. 
             // If the application was previously in the background, optionally refresh the user interface.
+            var viewController = (TileViewController)Window.RootViewController;
+            viewController.OnResumeActions();
         }
 
         public override void WillTerminate(UIApplication application)

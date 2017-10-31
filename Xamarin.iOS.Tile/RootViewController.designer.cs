@@ -8,7 +8,7 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace Xamarin.iOS.Tile
+namespace XamariniOSTileTemplate
 {
     [Register ("RootViewController")]
     partial class RootViewController

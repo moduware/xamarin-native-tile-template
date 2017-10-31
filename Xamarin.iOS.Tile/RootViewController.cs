@@ -5,13 +5,13 @@ using Platform.Core;
 using Plugin.BLE;
 using System.Threading.Tasks;
 using Serilog;
+using Platform.Tile.iOS;
+using Platform.Core.CommonTypes;
 
 namespace XamariniOSTileTemplate
 {
-    public partial class RootViewController : UIViewController
+    public partial class RootViewController : TileViewController
     {
-        private Core Core;
-
         public RootViewController() : base("RootViewController", null)
         {
         }
@@ -26,20 +26,12 @@ namespace XamariniOSTileTemplate
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            Task.Run(() =>
-            {
-                // Perform any additional setup after loading the view, typically from a nib.
-                Core = new Core((code) => InvokeOnMainThread(code), PassiveMode: true, settings: new CoreSettings
-                {
-                    RequestManifests = true,
-                    RequestModuleDrivers = true
-                });
-                
-                Core.Error += (sender, e) => Log.Information("[PlatformCore] Error: " + e.Message);
 
-                // Searching for connected gateways
-                Core.Gateways.CheckConnected();
-            });
+            TileId = "moduware.tile.led-dev";
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.NSLog()
+                .CreateLogger();
         }
 
         partial void SetColorButton_TouchUpInside(UIButton sender)
@@ -48,14 +40,13 @@ namespace XamariniOSTileTemplate
             var GreenNumber = int.Parse(GreenColor.Text);
             var BlueNumber = int.Parse(BlueColor.Text);
 
-            // finding all LED modules
-            foreach (var module in Core.Gateways.List[0].Modules)
+            // We are working with target module or first of type, what is fine for single module use
+            Uuid targetUuid = GetUuidOfTargetModuleOrFirstOfType("nexpaq.module.led");
+
+            // Running command on found module
+            if (targetUuid != Uuid.Empty)
             {
-                if (module == null) continue;
-                if (module.Manifest.TypeID == "nexpaq.module.led")
-                {
-                    Core.API.Module.SendCommand(module.UUID, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
-                }
+                Core.API.Module.SendCommand(targetUuid, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
             }
         }
     }

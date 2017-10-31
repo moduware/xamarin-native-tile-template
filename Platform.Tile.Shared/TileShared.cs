@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 #if __IOS__
 namespace Platform.Tile.iOS
 { 
-    public partial class TileViewController
+    public partial class TileViewController : UIKit.UIViewController
 #endif
 #if __ANDROID__
 namespace Platform.Tile.Droid
@@ -20,19 +20,21 @@ namespace Platform.Tile.Droid
     public partial class TileActivity : Android.App.Activity
 #endif
     {
+        public Core.Core Core { get { return _core; } }
+
         protected string TileId;
         protected TileArguments Arguments = new TileArguments();
-        protected Core.Core Core;
+        protected Core.Core _core;
         protected IUtilities Utilities;
 
         private string CurrentConfiguration = String.Empty;
 
-        private void OnCreateActions()
+        public void OnCreateActions()
         {
             RunCore();
         }
 
-        private void OnResumeActions()
+        public void OnResumeActions()
         {
             if (Core != null && Core.Gateways.List.Count == 0)
             {
@@ -40,7 +42,7 @@ namespace Platform.Tile.Droid
             }
         }
 
-        private void OnQueryRecieved(string queryUrl)
+        public void OnQueryRecieved(string queryUrl)
         {
             var url = new Url(queryUrl);
             var domain = url.Path.Replace(TileId + "://", String.Empty);
@@ -71,7 +73,7 @@ namespace Platform.Tile.Droid
             Task.Run(() =>
             {
                 // Loading Platform Core
-                Core = new Core.Core(code => RunOnUiThread(code), PassiveMode: true);
+                _core = new Core.Core(code => RunOnUiThread(code), PassiveMode: true);
 
                 Core.Gateways.GatewayConnected += Gateways_GatewayConnected;
                 Core.Gateways.GatewayDisconnected += Gateways_GatewayDisconnected;
@@ -84,7 +86,7 @@ namespace Platform.Tile.Droid
         /// Actions to perfom when we are not connected to any gateway.
         /// Notify user and open moduware app.
         /// </summary>
-        protected void NotConnectedActions()
+        public void NotConnectedActions()
         {
             // let user know that there are no connected gateways and it is required to open Moduware app for connection
             Utilities.ShowNotConnectedAlert(() =>
@@ -97,7 +99,7 @@ namespace Platform.Tile.Droid
         /// <summary>
         /// Check if we have any connected gateways
         /// </summary>
-        private void CheckConnectedGateways()
+        public void CheckConnectedGateways()
         {
             Task.Run(async () =>
             {
@@ -169,7 +171,7 @@ namespace Platform.Tile.Droid
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected Uuid GetUuidOfTargetModuleOrFirstOfType(string type)
+        public Uuid GetUuidOfTargetModuleOrFirstOfType(string type)
         {
             if (Arguments.TargetModuleUuid != Uuid.Empty)
             {

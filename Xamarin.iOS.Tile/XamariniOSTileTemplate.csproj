@@ -40,7 +40,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;__UNIFIED__;__MOBILE__;__IOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -151,12 +151,22 @@
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
+      <Project>{7b328ddc-4013-4176-9954-3f410251ec88}</Project>
+      <Name>AssassinEventSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform.Tile.iOS\Platform.Tile.iOS.csproj">
+      <Project>{4a938ed6-42cd-4b66-b950-5efbe7b3dc3b}</Project>
+      <Name>Platform.Tile.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.CommonTypes\Platform.Core.CommonTypes.csproj">
-      <Project>{761839cb-7e21-461b-b03a-ca2523aebeee}</Project>
+      <Project>{c9f41c24-87f7-4a6b-a732-7958a1f8f822}</Project>
       <Name>Platform.Core.CommonTypes</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.Core\Platform.Core.csproj">
-      <Project>{7f1129cf-95d1-45cd-811e-c2697c110d66}</Project>
+      <Project>{68c6fdb9-315b-4dfa-9774-409412aaf10d}</Project>
       <Name>Platform.Core</Name>
     </ProjectReference>
   </ItemGroup>
