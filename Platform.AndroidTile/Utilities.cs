@@ -9,10 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Platform.Tile.Shared;
 
 namespace Platform.Tile.Droid
 {
-    public class Utilities
+    public class Utilities : IUtilities
     {
         private Context context;
 

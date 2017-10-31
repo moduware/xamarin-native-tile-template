@@ -132,10 +132,6 @@
       <Project>{7f1129cf-95d1-45cd-811e-c2697c110d66}</Project>
       <Name>Platform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xamarin.Tile\Platform.Tile.Shared.csproj">
-      <Project>{f3f36665-0ee6-4ccf-90fa-906457662fd4}</Project>
-      <Name>Platform.Tile.Shared</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
