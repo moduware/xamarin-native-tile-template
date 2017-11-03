@@ -34,5 +34,18 @@
   <array>
     <string>moduware.application.dashboard</string>
   </array>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLName</key>
+      <string>moduware.xamarin.tile-template.urlscheme</string>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>moduware.tile.template</string>
+      </array>
+      <key>CFBundleURLTypes</key>
+      <string>Viewer</string>
+    </dict>
+  </array>
 </dict>
 </plist>
