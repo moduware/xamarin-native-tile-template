@@ -1,0 +1,22 @@
+{
+  "id": "moduware.tile.template",
+  "name": "Tile Template",
+  "description": "Moduware tile template",
+
+  "version": "0.0.1",
+  "changes": "Initial release",
+  "minumumAppVersion": "1.0.0",
+  "modules": [
+    "nexpaq.module.led"
+  ],
+  
+  "title": "Template",
+  "color": "deepskyblue",
+  "textColor": "white",
+
+  "type": "native",
+  "installationLinks": {
+    "android": "http://google.com",
+    "ios": "http://apple.com"
+  }
+}
