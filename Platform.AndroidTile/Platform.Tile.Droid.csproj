@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssassinEventSystem, Version=0.8.6516.29013, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AssassinEventSystem.0.8.6516.29013\lib\portable45-net45+win8+wpa81\AssassinEventSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Flurl, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Flurl.2.5.0\lib\netstandard1.3\Flurl.dll</HintPath>
     </Reference>
@@ -62,10 +65,6 @@
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
-      <Project>{7b328ddc-4013-4176-9954-3f410251ec88}</Project>
-      <Name>AssassinEventSystem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlatformCore\Platform.CommonTypes\Platform.Core.CommonTypes.csproj">
       <Project>{c9f41c24-87f7-4a6b-a732-7958a1f8f822}</Project>
       <Name>Platform.Core.CommonTypes</Name>

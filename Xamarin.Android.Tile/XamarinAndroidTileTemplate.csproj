@@ -55,6 +55,9 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssassinEventSystem, Version=0.8.6516.29013, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AssassinEventSystem.0.8.6516.29013\lib\portable45-net45+win8+wpa81\AssassinEventSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
@@ -119,10 +122,6 @@
     <Folder Include="Resources\mipmap-xxxhdpi\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
-      <Project>{7b328ddc-4013-4176-9954-3f410251ec88}</Project>
-      <Name>AssassinEventSystem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Platform.AndroidTile\Platform.Tile.Droid.csproj">
       <Project>{55ae2db5-8f3c-4af2-819c-396850a05222}</Project>
       <Name>Platform.Tile.Droid</Name>

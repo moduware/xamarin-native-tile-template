@@ -104,6 +104,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AssassinEventSystem, Version=0.8.6516.29013, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AssassinEventSystem.0.8.6516.29013\lib\portable45-net45+win8+wpa81\AssassinEventSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Flurl, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Flurl.2.5.0\lib\netstandard1.3\Flurl.dll</HintPath>
     </Reference>
@@ -153,10 +156,6 @@
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
-      <Project>{7b328ddc-4013-4176-9954-3f410251ec88}</Project>
-      <Name>AssassinEventSystem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Platform.Tile.iOS\Platform.Tile.iOS.csproj">
       <Project>{4a938ed6-42cd-4b66-b950-5efbe7b3dc3b}</Project>
       <Name>Platform.Tile.iOS</Name>
