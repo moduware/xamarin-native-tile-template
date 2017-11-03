@@ -25,7 +25,7 @@ namespace XamariniOSTileTemplate
 
         public override void ViewDidLoad()
         {
-            TileId = "moduware.tile.led-dev";
+            TileId = "moduware.tile.template";
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.NSLog()
