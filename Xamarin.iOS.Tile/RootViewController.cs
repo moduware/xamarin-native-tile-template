@@ -25,13 +25,13 @@ namespace XamariniOSTileTemplate
 
         public override void ViewDidLoad()
         {
-            base.ViewDidLoad();
-
             TileId = "moduware.tile.led-dev";
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.NSLog()
                 .CreateLogger();
+
+            base.ViewDidLoad();
         }
 
         partial void SetColorButton_TouchUpInside(UIButton sender)

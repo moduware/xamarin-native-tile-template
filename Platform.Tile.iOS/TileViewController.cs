@@ -18,8 +18,12 @@ namespace Platform.Tile.iOS
         {
             base.ViewDidLoad();
 
-            // TODO: Utilities = new Utilities(this);
+            Utilities = new Utilities(RunOnUiThread);
+        }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
             OnCreateActions();
         }
 
