@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Platform.Tile.Shared;
+using Moduware.Platform.Tile.Shared;
 
-namespace Platform.Tile.Droid
+namespace Moduware.Platform.Tile.Droid
 {
     public class Utilities : IUtilities
     {

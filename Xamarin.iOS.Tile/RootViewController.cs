@@ -1,12 +1,12 @@
 ﻿using System;
 
 using UIKit;
-using Platform.Core;
+using Moduware.Platform.Core;
 using Plugin.BLE;
 using System.Threading.Tasks;
 using Serilog;
-using Platform.Tile.iOS;
-using Platform.Core.CommonTypes;
+using Moduware.Platform.Tile.iOS;
+using Moduware.Platform.Core.CommonTypes;
 
 namespace XamariniOSTileTemplate
 {

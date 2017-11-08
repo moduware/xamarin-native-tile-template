@@ -5,10 +5,10 @@ using System.Text;
 
 using Foundation;
 using UIKit;
-using Platform.Tile.Shared;
+using Moduware.Platform.Tile.Shared;
 using System.Threading.Tasks;
 
-namespace Platform.Tile.iOS
+namespace Moduware.Platform.Tile.iOS
 {
     class Utilities : IUtilities
     {

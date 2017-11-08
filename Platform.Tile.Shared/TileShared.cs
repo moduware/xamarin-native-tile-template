@@ -1,8 +1,8 @@
 ﻿using Flurl;
-using Platform.Core;
-using Platform.Core.CommonTypes;
-using Platform.Tile.Shared;
-using Platfrom.Tile.Shared.Structs;
+using Moduware.Platform.Core;
+using Moduware.Platform.Core.CommonTypes;
+using Moduware.Platform.Tile.Shared;
+using Moduware.Platfrom.Tile.Shared.Structs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 #if __IOS__
-namespace Platform.Tile.iOS
+namespace Moduware.Platform.Tile.iOS
 { 
     public partial class TileViewController : UIKit.UIViewController
 #endif
 #if __ANDROID__
-namespace Platform.Tile.Droid
+namespace Moduware.Platform.Tile.Droid
 { 
     public partial class TileActivity : Android.App.Activity
 #endif

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Platform.Tile.Shared
+namespace Moduware.Platform.Tile.Shared
 {
     public interface IUtilities
     {

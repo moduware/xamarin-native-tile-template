@@ -1,11 +1,11 @@
-﻿using Platform.Core.CommonTypes;
+﻿using Moduware.Platform.Core.CommonTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Platfrom.Tile.Shared.Structs
+namespace Moduware.Platfrom.Tile.Shared.Structs
 {
     /// <summary>
     /// Arguments are parameters tile was launched with was launched with

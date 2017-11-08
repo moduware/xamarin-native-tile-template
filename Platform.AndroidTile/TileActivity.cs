@@ -1,13 +1,12 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Platform.Core.CommonTypes;
-using Platfrom.Tile.Shared.Structs;
-using Platfrom.Tile.Shared;
+using Moduware.Platform.Core.CommonTypes;
+using Moduware.Platform.Tile.Shared;
 using System;
 using System.Threading.Tasks;
 
-namespace Platform.Tile.Droid
+namespace Moduware.Platform.Tile.Droid
 {
     public partial class TileActivity : Android.App.Activity
     {

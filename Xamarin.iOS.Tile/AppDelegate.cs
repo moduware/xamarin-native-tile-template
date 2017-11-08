@@ -1,5 +1,5 @@
 ﻿using Foundation;
-using Platform.Tile.iOS;
+using Moduware.Platform.Tile.iOS;
 using Serilog;
 using UIKit;
 

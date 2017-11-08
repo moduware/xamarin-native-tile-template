@@ -2,14 +2,12 @@
 using Android.Widget;
 using Android.OS;
 using Plugin.BLE;
-using Platform.Core;
 using Serilog;
 using System.Threading.Tasks;
-using Platform.Core.CommonTypes;
-using Platfrom.Tile.Shared.Structs;
 using Android.Content;
 using System;
-using Platform.Tile.Droid;
+using Moduware.Platform.Tile.Droid;
+using Moduware.Platform.Core.CommonTypes;
 
 namespace XamarinAndroidTileTemplate
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UIKit;
 
-namespace Platform.Tile.iOS
+namespace Moduware.Platform.Tile.iOS
 {
     public partial class TileViewController : UIViewController
     {
