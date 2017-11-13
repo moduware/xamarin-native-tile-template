@@ -51,8 +51,13 @@ namespace Moduware.Platform.Tile.Droid
             {
                 Arguments = new TileArguments
                 {
+                    // UUID of target module from Dashboard
                     TargetModuleUuid = new Uuid(url.QueryParams["target-module-uuid"].ToString()),
+                    // Slot that module plugged in, for 2 size modules check "orientation" in manifest 
+                    // to calculate second taken slot
                     TargetModuleSlot = int.Parse(url.QueryParams["target-module-slot"].ToString()),
+                    // Type of the target module, use for progressive enchancement, when some module types
+                    // are more powerfull then others
                     TargetModuleType = url.QueryParams["target-module-type"].ToString()
                 };
 
@@ -74,9 +79,11 @@ namespace Moduware.Platform.Tile.Droid
             {
                 // Loading Platform Core
                 _core = new Core.Core(code => RunOnUiThread(code), PassiveMode: true);
-
+                
                 Core.Gateways.GatewayConnected += Gateways_GatewayConnected;
                 Core.Gateways.GatewayDisconnected += Gateways_GatewayDisconnected;
+
+                CoreReady(this, EventArgs.Empty);
 
                 CheckConnectedGateways();
             });
@@ -171,7 +178,7 @@ namespace Moduware.Platform.Tile.Droid
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public Uuid GetUuidOfTargetModuleOrFirstOfType(string type)
+        public Uuid GetUuidOfTargetModuleOrFirstOfType(List<string> types)
         {
             if (Arguments.TargetModuleUuid != Uuid.Empty)
             {
@@ -179,14 +186,24 @@ namespace Moduware.Platform.Tile.Droid
             }
             else
             {
-                var module = Core.API.Module.GetFirstByType(type);
-                if (module != null)
+                foreach(var moduleType in types)
                 {
-                    return module.UUID;
+                    var module = Core.API.Module.GetFirstByType(moduleType);
+                    if (module != null && module.UUID != null)
+                    {
+                        return module.UUID;
+                    }
                 }
             }
 
             return Uuid.Empty;
         }
+
+        public Uuid GetUuidOfTargetModuleOrFirstOfType(string type)
+        {
+            return GetUuidOfTargetModuleOrFirstOfType(new List<string> { type });
+        }
+
+        public event EventHandler CoreReady = delegate { };
     }
 }
