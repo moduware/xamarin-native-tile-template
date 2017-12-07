@@ -11,7 +11,7 @@ using Moduware.Platform.Core.CommonTypes;
 using Moduware.Platform.Core.EventArguments;
 using System.Collections.Generic;
 
-namespace XamarinAndroidTileTemplate
+namespace TileTemplate.Droid
 {
     [Activity(Label = "Tile template", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleInstance)]
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.template", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
