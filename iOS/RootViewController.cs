@@ -10,7 +10,7 @@ using Moduware.Platform.Core.CommonTypes;
 using System.Collections.Generic;
 using Moduware.Platform.Core.EventArguments;
 
-namespace XamariniOSTileTemplate
+namespace TileTemplate.iOS
 {
     public partial class RootViewController : TileViewController
     {

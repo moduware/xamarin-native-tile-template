@@ -6,9 +6,9 @@
     <ProjectGuid>{CC6CCA50-4C6E-4E2B-AD04-A54340F8C6E7}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>XamariniOSTileTemplate</RootNamespace>
+    <RootNamespace>TileTemplate.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>XamariniOSTileTemplate</AssemblyName>
+    <AssemblyName>TileTemplate.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
