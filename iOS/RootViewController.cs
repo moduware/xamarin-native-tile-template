@@ -9,17 +9,16 @@ using Moduware.Platform.Tile.iOS;
 using Moduware.Platform.Core.CommonTypes;
 using System.Collections.Generic;
 using Moduware.Platform.Core.EventArguments;
+using TileTemplate.Shared;
+using TileTemplate.Shared.Events;
 
 namespace TileTemplate.iOS
 {
-    public partial class RootViewController : TileViewController
+    public partial class RootViewController : TileViewController, INative
     {
-        private List<string> targetModuleTypes = new List<string>
-        {
-            "nexpaq.module.led",
-            "moduware.module.led" // new module type using other kind of LEDs
-        };
+        private SharedLogic _tile;
 
+        public event EventHandler<ColorConfigButtonClickEventArgs> ColorConfigButtonClicked = delegate { };
         public RootViewController() : base("RootViewController", null) { }
 
         public override void DidReceiveMemoryWarning()
@@ -32,7 +31,7 @@ namespace TileTemplate.iOS
         public override void ViewDidLoad()
         {
             // We need assign Id of our tile here, it is required for proper Dashboard - Tile communication
-            TileId = "moduware.tile.template";
+            TileId = SharedLogic.TileId;
 
             // Logger to output messages from PlatformCore to console
             Log.Logger = new LoggerConfiguration()
@@ -47,56 +46,28 @@ namespace TileTemplate.iOS
 
         private void CoreReadyHandler(Object source, EventArgs e)
         {
-            /**
-            * We can setup lister for received data here
-            * you can remove it if your tile not receiving any data from module
-            */
-            Core.API.Module.DataReceived += ModuleDataReceivedHandler;
-
-            /**
-             * You can use raw data event to process raw data from module in byte format without 
-             * processing it through module driver
-             */
-            // Core.API.Module.RawDataReceived += ...;
+            // When core is ready initialising our logic
+            _tile = new SharedLogic(Core, this);
         }
 
-        private void ModuleDataReceivedHandler(object sender, DriverParseResultEventArgs e)
-        {
-            var targetModuleUuid = GetUuidOfTargetModuleOrFirstOfType(targetModuleTypes);
-            // If there are no supported modules plugged in
-            if (targetModuleUuid == Uuid.Empty) return;
-            // Ignoring data coming from non-target modules
-            if (e.ModuleUUID != targetModuleUuid) return;
-
-            // TODO: here we need to work with parsed data from module somehow 
-
-            /**
-             * It is a good practice to scope your data to some contexts
-             * and first check context before processing data from module
-             */
-            // if(e.DataSource == "SensorValue") { ... }
-
-            // outputing data variables to log
-            foreach (var variable in e.Variables)
-            {
-                Log.Information(variable.Key + "= " + variable.Value);
-            }
-        }
-
-        partial void SetColorButton_TouchUpInside(UIButton sender)
+        private Tuple<int, int, int> GetColorFromUi()
         {
             var RedNumber = int.Parse(RedColor.Text);
             var GreenNumber = int.Parse(GreenColor.Text);
             var BlueNumber = int.Parse(BlueColor.Text);
 
-            // We are working with target module or first of type, what is fine for single module use
-            var targetModuleUuid = GetUuidOfTargetModuleOrFirstOfType(targetModuleTypes);
+            return new Tuple<int, int, int>(RedNumber, GreenNumber, BlueNumber);
+        }
 
-            // Running command on found module
-            if (targetModuleUuid != Uuid.Empty)
+        partial void SetColorButton_TouchUpInside(UIButton sender)
+        {
+            var color = GetColorFromUi();
+            ColorConfigButtonClicked(this, new ColorConfigButtonClickEventArgs
             {
-                Core.API.Module.SendCommand(targetModuleUuid, "SetRGB", new[] { RedNumber, GreenNumber, BlueNumber });
-            }
+                Red = color.Item1,
+                Green = color.Item2,
+                Blue = color.Item3
+            });
         }
     }
 }
