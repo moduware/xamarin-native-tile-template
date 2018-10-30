@@ -7,7 +7,8 @@
   "changes": "Initial release",
   "minumumAppVersion": "1.0.0",
   "modules": [
-    "nexpaq.module.led"
+    "nexpaq.module.led",
+    "moduware.module.led"
   ],
   
   "title": "Template",
