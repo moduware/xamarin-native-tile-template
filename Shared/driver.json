@@ -1,0 +1,362 @@
+{
+    "type": "moduware.module.led",
+    "version": "1.1.0",
+    "commands": [
+        {
+            "name": "SetRGB",
+            "title": "Set color in RGB",
+            "description": "Changes color of module to specified RGB color, takes 3 integers",
+            "arguments": [
+                {
+                    "name": "Red",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                }, 
+                {
+                    "name": "Green",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                }, 
+                {
+                    "name": "Blue",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                }
+            ],
+            "command": "2702"
+        },
+        {
+            "name": "TurnOffLeds",
+            "title": "Turn off module leds",
+            "description": "Turns off all led elements on module",
+            "command": "2700",
+            "data": [{
+                "defaultValue": 0
+            }]
+        },
+        {
+            "name": "FlashLEDRedAndBlue",
+            "title": "Flash LED Red And Blue",
+            "description": "Flashed LED elements with red and blue color",
+            "command": "2700",
+            "data": [
+                {
+                    "defaultValue": 6
+                }
+            ]
+        },
+        {
+            "name": "SetOneLEDInRGB",
+            "title": "Set One LED in RGB",
+            "description": "Set particular LED in mudule to specific RGB color",
+            "command": "2708",
+            "arguments": [
+                {
+                    "name": "LedIndex",
+                    "description": "Integer made of byte where bits indicate leds to set 0-5, like 00001001",
+                    "validation": "({0} >= 0) and ({0} <= 5)"
+                },
+                {
+                    "name": "Red",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                },
+                {
+                    "name": "Green",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                },
+                {
+                    "name": "Blue",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                }
+            ]
+        },
+        {
+            "name": "SetFlashes",
+            "title": "Set Flash brightness",
+            "description": "Configure brightness of flash elements",
+            "arguments": [
+                {
+                    "name": "Flash 1 Brightness",
+                    "validation": "({0} >= 0) and ({0} <= 9000)"
+                },
+                {
+                    "name": "Flash 2 Brightness",
+                    "validation": "({0} >= 0) and ({0} <= 9000)"
+                }
+            ],
+            "command": "270A",
+            "data": [
+                {
+                    "defaultValue": 1
+                },
+                {
+                    "convert": true,
+                    "format": "({0} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{0} & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "({1} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{1} & 0xFF"
+                }
+            ]
+        },
+        {
+            "name": "FlashWithDelay",
+            "title": "Make flash with delay",
+            "description": "Flashes one time with specified power after delay",
+            "arguments": [
+                {
+                    "name": "Power",
+                    "validation": "({0} >= 0) and ({0} <= 15)"
+                },
+                {
+                    "name": "Delay",
+                    "validation": "({0} >= 0) and ({0} <= 1280)"
+                }
+            ],
+            "command": "270A",
+            "data": [
+                {
+                    "defaultValue": 2
+                },
+                {
+                    "convert": true,
+                    "format": "{0}"
+                },
+                {
+                    "convert": true,
+                    "format": "({1} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{1} & 0xFF"
+                }
+            ]
+        },
+        {
+            "name": "TurnOffFlashs",
+            "title": "Turn off module flashes",
+            "description": "Turn off all module flash elements",
+            "command": "270A",
+            "data": [{
+                "index": 0,
+                "defaultValue": 0
+            }]
+        },
+        {
+            "name": "StartFlashingRgbLeds",
+            "title": "Start Flashing RGB LEDs",
+            "description": "Flashing RGB LEDs with specified duration and interval",
+            "command": "270E",
+            "arguments": [
+                {
+                    "name": "Interval",
+                    "validation": "({0} >= 0) and ({0} <= 65535)"
+                },
+                {
+                    "name": "Duration",
+                    "validation": "({0} >= 0) and ({0} <= 65535)"
+                },
+                {
+                    "name": "Red",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                },
+                {
+                    "name": "Green",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                },
+                {
+                    "name": "Blue",
+                    "validation": "({0} >= 0) and ({0} <= 255)"
+                }
+            ],
+            "data": [
+                {
+                    "defaultValue": 1
+                },
+                {
+                    "convert": true,
+                    "format": "({0} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{0} & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "({1} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{1} & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{2}"
+                },
+                {
+                    "convert": true,
+                    "format": "{3}"
+                },
+                {
+                    "convert": true,
+                    "format": "{4}"
+                }
+            ]
+        },
+        {
+            "name": "StopFlashingRgbLeds",
+            "title": "Stop Flashing RGB LEDs",
+            "description": "Flashing RGB LEDs with specified duration and interval",
+            "command": "270E",
+            "data": [
+                {
+                    "defaultValue": 0
+                }
+            ]
+        },
+        {
+            "name": "StartFlashingFlashLeds",
+            "title": "Start Flashing Flash LEDs",
+            "description": "Flashing Flash LEDs with specified duration and interval",
+            "command": "2710",
+            "arguments": [
+                {
+                    "name": "Interval",
+                    "validation": "({0} >= 0) and ({0} <= 65535)"
+                },
+                {
+                    "name": "Duration",
+                    "validation": "({0} >= 0) and ({0} <= 65535)"
+                },
+                {
+                    "name": "Flash Brightness",
+                    "validation": "({0} >= 0) and ({0} <= 9000)"
+                }
+            ],
+            "data": [
+                {
+                    "defaultValue": 1
+                },
+                {
+                    "convert": true,
+                    "format": "({0} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{0} & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "({1} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{1} & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "({2} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{2} & 0xFF"
+                }
+            ]
+        },
+        {
+            "name": "StopFlashingFlashLeds",
+            "title": "Stop Flashing Flash Leds",
+            "description": "Stop Flashing Flash Leds",
+            "command": "2710",
+            "data": [
+                {
+                    "defaultValue": 0
+                }
+            ]
+        },
+        {
+            "name": "TurnOnRgbLedTemperatureProtection",
+            "title": "Turn On Rgb Led Temperature Protection",
+            "description": "Turn On Rgb Led Temperature Protection",
+            "command": "2712",
+            "arguments": [
+                {
+                    "name": "Timer Value",
+                    "validation": "({0} >= 0) and ({0} <= 65535)"
+                }
+            ],
+            "data": [
+                {
+                    "defaultValue": 1
+                },
+                {
+                    "convert": true,
+                    "format": "({0} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{0} & 0xFF"
+                }
+            ]
+        },
+        {
+            "name": "TurnOffRgbLedTemperatureProtection",
+            "title": "Turn Off Rgb Led Temperature Protection",
+            "description": "Turn Off Rgb Led Temperature Protection",
+            "command": "2712",
+            "data": [
+                {
+                    "defaultValue": 0
+                }
+            ]
+        },
+        {
+            "name": "TurnOnFlashLedTemperatureProtection",
+            "title": "Turn On Flash Led Temperature Protection",
+            "description": "Turn On Flash Led Temperature Protection",
+            "command": "2716",
+            "arguments": [
+                {
+                    "name": "Timer Value",
+                    "validation": "({0} >= 0) and ({0} <= 65535)"
+                }
+            ],
+            "data": [
+                {
+                    "defaultValue": 1
+                },
+                {
+                    "convert": true,
+                    "format": "({0} >> 8) & 0xFF"
+                },
+                {
+                    "convert": true,
+                    "format": "{0} & 0xFF"
+                }
+            ]
+        },
+        {
+            "name": "TurnOffFlashLedTemperatureProtection",
+            "title": "Turn Off Flash Led Temperature Protection",
+            "description": "Turn Off Flash Led Temperature Protection",
+            "command": "2716",
+            "data": [
+                {
+                    "defaultValue": 0
+                }
+            ]
+        },
+        {
+            "name": "RequestStatus",
+            "title": "Request Status",
+            "description": "Request status of the LED module",
+            "command": "2714",
+            "data": []
+        }
+    ]
+}

@@ -42,6 +42,7 @@
     <Compile Include="TileUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="driver.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +97,10 @@
     <ProjectReference Include="..\platform-core\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj">
       <Project>{E07D3348-1F73-456F-BAE4-B106DE10BFDE}</Project>
       <Name>Moduware.Platform.Core.Connection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\platform-core\Moduware.Platform.Core.ModuleDriverSystem\Moduware.Platform.Core.ModuleDriverSystem.csproj">
+      <Project>{cc5f9c4d-19b0-489f-8b72-e90da017b4c0}</Project>
+      <Name>Moduware.Platform.Core.ModuleDriverSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

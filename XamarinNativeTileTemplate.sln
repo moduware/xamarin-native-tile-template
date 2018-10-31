@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.Comm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.Connection", "platform-core\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj", "{E07D3348-1F73-456F-BAE4-B106DE10BFDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.ModuleDriverSystem", "platform-core\Moduware.Platform.Core.ModuleDriverSystem\Moduware.Platform.Core.ModuleDriverSystem.csproj", "{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -289,6 +291,36 @@ Global
 		{E07D3348-1F73-456F-BAE4-B106DE10BFDE}.Release|iPhone.Build.0 = Release|Any CPU
 		{E07D3348-1F73-456F-BAE4-B106DE10BFDE}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E07D3348-1F73-456F-BAE4-B106DE10BFDE}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Ad-Hoc|Any CPU.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Ad-Hoc|Any CPU.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Ad-Hoc|iPhone.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Ad-Hoc|iPhone.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Ad-Hoc|iPhoneSimulator.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.AppStore|Any CPU.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.AppStore|Any CPU.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.AppStore|iPhone.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.AppStore|iPhone.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.AppStore|iPhoneSimulator.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.AppStore|iPhoneSimulator.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Develop|Any CPU.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Develop|Any CPU.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Develop|iPhone.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Develop|iPhone.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Develop|iPhoneSimulator.ActiveCfg = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Develop|iPhoneSimulator.Build.0 = Develop|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Release|iPhone.Build.0 = Release|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -299,6 +331,7 @@ Global
 		{C9F41C24-87F7-4A6B-A732-7958A1F8F822} = {F22B249F-A359-4704-9397-21C8EF446807}
 		{D02C67B5-D12B-477A-84F3-67AC4438D945} = {F22B249F-A359-4704-9397-21C8EF446807}
 		{E07D3348-1F73-456F-BAE4-B106DE10BFDE} = {F22B249F-A359-4704-9397-21C8EF446807}
+		{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0} = {F22B249F-A359-4704-9397-21C8EF446807}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C31C8710-780E-4FA6-BF51-60F46D8D6A09}

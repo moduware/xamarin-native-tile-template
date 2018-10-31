@@ -3,6 +3,8 @@ using Moduware.Platform.Core.CommunicationProtocol;
 using Moduware.Platform.Core.CommunicationProtocol.SourceDestinationStrategies;
 using Moduware.Platform.Core.Connection;
 using Moduware.Platform.Core.Connection.EventArguments;
+using Moduware.Platform.Core.ModuleDriverSystem.Controllers;
+using Moduware.Platform.Core.ModuleDriverSystem.Models;
 using Newtonsoft.Json;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions;
@@ -11,6 +13,8 @@ using Serilog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace TileTemplate.Shared
@@ -21,12 +25,15 @@ namespace TileTemplate.Shared
         private IAdapter _bluetoothAdapter;
         private IDevice _gatewayDevice = null;
         private BleConnection _connection = null;
+        private DriverController _driverController = new DriverController();
+        private DriverModel _driver;
 
         public bool IsConnected => _connection != null;
         public bool HasArguments => _arguments != null;
 
         public SharedLogic()
         {
+            LoadDriver();
             _bluetoothAdapter = CrossBluetoothLE.Current.Adapter;
             // tracking disconnect event
             _bluetoothAdapter.DeviceDisconnected += async (o, e) =>
@@ -52,12 +59,23 @@ namespace TileTemplate.Shared
             };
         }
 
+        private void LoadDriver()
+        {
+            var assembly = typeof(SharedLogic).GetTypeInfo().Assembly;
+            Stream stream = assembly.GetManifestResourceStream("TileTemplate.Shared." + "driver.json");
+            var driverJson = new StreamReader(stream).ReadToEnd();
+
+            _driver = DriverController.Deserialize(driverJson);
+        }
+
         public async Task SetColorInRgb(int r, int g, int b)
         {
             var slot = int.Parse(_arguments.Slot);
-            var message = ProtocolMessage.Create(new PhoneToModuleStrategy(slot), new ProtocolMessageType("2702"), new[] { (byte)r, (byte)g, (byte)b });
+            // sending command without driver
+            //var message = ProtocolMessage.Create(new PhoneToModuleStrategy(slot), new ProtocolMessageType("2702"), new[] { (byte)r, (byte)g, (byte)b });
+            // sending command via driver
+            var message = _driverController.ConstructProtocolMessage(_driver, slot, "SetRGB", new[] { r, g, b });
             await _connection.Send(message);
-            //_core.API.Module.SendCommand(_targetModuleUuid, "SetRGB", new[] { r, g, b });
         }
 
         public void SetArguments(string queryUrl)
