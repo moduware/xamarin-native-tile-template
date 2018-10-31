@@ -1,11 +1,14 @@
 ﻿using Flurl;
+using Moduware.Platform.Core.CommunicationProtocol;
 using Moduware.Platform.Core.Connection;
+using Moduware.Platform.Core.Connection.EventArguments;
 using Newtonsoft.Json;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions;
 using Plugin.BLE.Abstractions.Contracts;
 using Serilog;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,6 +22,7 @@ namespace TileTemplate.Shared
         private BleConnection _connection = null;
 
         public bool IsConnected => _connection != null;
+        public bool HasArguments => _arguments != null;
 
         public SharedLogic()
         {
@@ -27,6 +31,8 @@ namespace TileTemplate.Shared
             {
                 if(e.Device == _gatewayDevice)
                 {
+                    _arguments = null;
+                    _gatewayDevice = null;
                     _connection = null;
                     // show alert and switch to dashboard
                     await TileUtilities.ShowAlertAsync("Gateway disconnected", "Gateway was disconnected, please use Moduware app to reconnect", "Ok");
@@ -37,6 +43,8 @@ namespace TileTemplate.Shared
             {
                 if (e.Device == _gatewayDevice)
                 {
+                    _arguments = null;
+                    _gatewayDevice = null;
                     _connection = null;
                     // show alert and switch to dashboard
                     await TileUtilities.ShowAlertAsync("Gateway lost", "Gateway connection lost, please use Moduware app to reconnect", "Ok");
@@ -55,6 +63,7 @@ namespace TileTemplate.Shared
 
         public async Task FindConnectedGateway()
         {
+            // Finding gateway among connected devices
             var connectedDevices = _bluetoothAdapter.GetSystemConnectedOrPairedDevices(new Guid[]
             {
                 BleConnection.BleServiceId
@@ -64,17 +73,8 @@ namespace TileTemplate.Shared
             {
                 if(device.State == DeviceState.Connected || device.State == DeviceState.Limited)
                 {
-                    // we need convert device from list to proper device with services
-                    // FIXME: must be called from a main thread
-                    //try
-                    //{
-                        _gatewayDevice = await _bluetoothAdapter.ConnectToKnownDeviceAsync(device.Id);
-                    //} catch(Exception e)
-                    //{
-
-                    //}
-                    
-                    //gatewayDevice = device;
+                    // converting listed device to connected with services
+                    _gatewayDevice = await _bluetoothAdapter.ConnectToKnownDeviceAsync(device.Id);
                     break;
                 }
             }
@@ -82,8 +82,34 @@ namespace TileTemplate.Shared
             {
                 throw new NullReferenceException("Cannot find connected gateway");
             }
+
+            // creating BLE connection out of gateway device
             _connection = new BleConnection();
             await _connection.Initialize(_gatewayDevice, true);
+
+            // Listning for messages from connection
+            //_connection.Received += _connectionMessageReceived;
+        }
+
+        private async void _connectionMessageReceived(object sender, ProtocolMessageReceivedEventArgs e)
+        {
+            var message = e.Message;
+            // Waiting for slots states changed message
+            if(message.Source == ProtocolMessageAddress.Gateway && message.Type == ProtocolMessageType.Gateway.SlotStatesInfo)
+            {
+                var states = new BitArray(message.Data);
+                var slot = int.Parse(_arguments.Slot);
+                if (states.Get(slot) == false)
+                {
+                    // target module was plugged out
+                    // TODO: alert user and switch to dashboard
+                    _arguments = null;
+                    _gatewayDevice = null;
+                    _connection = null;
+                    await TileUtilities.ShowAlertAsync("Module plugged out", "Target module was plugged out, please reopen the tile from Moduware app", "Ok");
+                    TileUtilities.OpenDashboard();
+                }
+            }
         }
 
         /// <summary>

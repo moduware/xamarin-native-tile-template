@@ -68,12 +68,15 @@ namespace TileTemplate.Droid
             });
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
+
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
 
-            // when tile already launched
-            //Task.Run(() => Initialize(intent));
             Task.Run(async () =>
             {
                 if (intent.Data != null)
@@ -84,6 +87,12 @@ namespace TileTemplate.Droid
                     {
                         await _tile.FindConnectedGateway();
                     }
+                } // if tile re-openned but no arguments provided checking if we already have them
+                else if(!_tile.HasArguments)
+                {
+                    // if we don't have arguments, alerting user again and rerouting to dashboard
+                    await TileUtilities.ShowAlertAsync("Warning", "Please launch the tile from Moduware app", "Ok");
+                    TileUtilities.OpenDashboard(); // open Moduware app
                 }
             });
         }

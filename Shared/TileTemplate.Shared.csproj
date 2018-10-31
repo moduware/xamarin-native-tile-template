@@ -91,6 +91,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\csharp-moduware-communication-protocol\Moduware.Platform.Core.CommunicationProtocol\Moduware.Platform.Core.CommunicationProtocol.csproj">
+      <Project>{D02C67B5-D12B-477A-84F3-67AC4438D945}</Project>
+      <Name>Moduware.Platform.Core.CommunicationProtocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\platform-core\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj">
       <Project>{E07D3348-1F73-456F-BAE4-B106DE10BFDE}</Project>
       <Name>Moduware.Platform.Core.Connection</Name>
