@@ -104,6 +104,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidTileUtilities.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,6 +131,10 @@
     <Folder Include="Resources\mipmap-xxxhdpi\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
+      <Project>{7B328DDC-4013-4176-9954-3F410251EC88}</Project>
+      <Name>AssassinEventSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shared\TileTemplate.Shared.csproj">
       <Project>{1ea1b4c4-264c-42ec-a7e9-1b2c8d74016a}</Project>
       <Name>TileTemplate.Shared</Name>

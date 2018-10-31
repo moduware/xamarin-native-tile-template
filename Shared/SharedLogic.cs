@@ -1,20 +1,48 @@
 ﻿using Flurl;
+using Moduware.Platform.Core.Connection;
 using Newtonsoft.Json;
+using Plugin.BLE;
+using Plugin.BLE.Abstractions;
+using Plugin.BLE.Abstractions.Contracts;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TileTemplate.Shared
 {
     public class SharedLogic
     {
         private TileArguments _arguments = null;
+        private IAdapter _bluetoothAdapter;
+        private IDevice _gatewayDevice = null;
+        private BleConnection _connection = null;
 
-        public bool HasArguments => _arguments != null;
+        public bool IsConnected => _connection != null;
 
         public SharedLogic()
         {
-            
+            _bluetoothAdapter = CrossBluetoothLE.Current.Adapter;
+            _bluetoothAdapter.DeviceDisconnected += async (o, e) =>
+            {
+                if(e.Device == _gatewayDevice)
+                {
+                    _connection = null;
+                    // show alert and switch to dashboard
+                    await TileUtilities.ShowAlertAsync("Gateway disconnected", "Gateway was disconnected, please use Moduware app to reconnect", "Ok");
+                    TileUtilities.OpenDashboard();
+                }
+            };
+            _bluetoothAdapter.DeviceConnectionLost += async (o, e) =>
+            {
+                if (e.Device == _gatewayDevice)
+                {
+                    _connection = null;
+                    // show alert and switch to dashboard
+                    await TileUtilities.ShowAlertAsync("Gateway lost", "Gateway connection lost, please use Moduware app to reconnect", "Ok");
+                    TileUtilities.OpenDashboard();
+                }
+            };
         }
 
         public void SetArguments(string queryUrl)
@@ -25,7 +53,38 @@ namespace TileTemplate.Shared
             _arguments = arguments;
         }
 
+        public async Task FindConnectedGateway()
+        {
+            var connectedDevices = _bluetoothAdapter.GetSystemConnectedOrPairedDevices(new Guid[]
+            {
+                BleConnection.BleServiceId
+            });
+            
+            foreach (var device in connectedDevices)
+            {
+                if(device.State == DeviceState.Connected || device.State == DeviceState.Limited)
+                {
+                    // we need convert device from list to proper device with services
+                    // FIXME: must be called from a main thread
+                    //try
+                    //{
+                        _gatewayDevice = await _bluetoothAdapter.ConnectToKnownDeviceAsync(device.Id);
+                    //} catch(Exception e)
+                    //{
 
+                    //}
+                    
+                    //gatewayDevice = device;
+                    break;
+                }
+            }
+            if(_gatewayDevice == null)
+            {
+                throw new NullReferenceException("Cannot find connected gateway");
+            }
+            _connection = new BleConnection();
+            await _connection.Initialize(_gatewayDevice, true);
+        }
 
         /// <summary>
         /// After module disconnected we need make sure we can continue working
