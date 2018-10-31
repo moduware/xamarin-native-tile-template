@@ -27,25 +27,23 @@ namespace TileTemplate.Shared
         public SharedLogic()
         {
             _bluetoothAdapter = CrossBluetoothLE.Current.Adapter;
+            // tracking disconnect event
             _bluetoothAdapter.DeviceDisconnected += async (o, e) =>
             {
                 if(e.Device == _gatewayDevice)
                 {
-                    _arguments = null;
-                    _gatewayDevice = null;
-                    _connection = null;
+                    ResetTile();
                     // show alert and switch to dashboard
                     await TileUtilities.ShowAlertAsync("Gateway disconnected", "Gateway was disconnected, please use Moduware app to reconnect", "Ok");
                     TileUtilities.OpenDashboard();
                 }
             };
+            // Tracking connection lost event
             _bluetoothAdapter.DeviceConnectionLost += async (o, e) =>
             {
                 if (e.Device == _gatewayDevice)
                 {
-                    _arguments = null;
-                    _gatewayDevice = null;
-                    _connection = null;
+                    ResetTile();
                     // show alert and switch to dashboard
                     await TileUtilities.ShowAlertAsync("Gateway lost", "Gateway connection lost, please use Moduware app to reconnect", "Ok");
                     TileUtilities.OpenDashboard();
@@ -88,28 +86,34 @@ namespace TileTemplate.Shared
             await _connection.Initialize(_gatewayDevice, true);
 
             // Listning for messages from connection
-            //_connection.Received += _connectionMessageReceived;
+            _connection.Received += _connectionMessageReceived;
         }
 
         private async void _connectionMessageReceived(object sender, ProtocolMessageReceivedEventArgs e)
         {
             var message = e.Message;
             // Waiting for slots states changed message
-            if(message.Source == ProtocolMessageAddress.Gateway && message.Type == ProtocolMessageType.Gateway.SlotStatesInfo)
+            if(message.Source == ProtocolMessageAddress.Gateway && message.Type.Equals(ProtocolMessageType.Gateway.SlotStatesInfo))
             {
                 var states = new BitArray(message.Data);
                 var slot = int.Parse(_arguments.Slot);
                 if (states.Get(slot) == false)
                 {
                     // target module was plugged out
-                    // TODO: alert user and switch to dashboard
-                    _arguments = null;
-                    _gatewayDevice = null;
-                    _connection = null;
+                    // alert user and switch to dashboard
+                    ResetTile();
                     await TileUtilities.ShowAlertAsync("Module plugged out", "Target module was plugged out, please reopen the tile from Moduware app", "Ok");
                     TileUtilities.OpenDashboard();
                 }
             }
+        }
+
+        private void ResetTile()
+        {
+            _arguments = null;
+            _gatewayDevice = null;
+            _connection.Received -= _connectionMessageReceived;
+            _connection = null;
         }
 
         /// <summary>
