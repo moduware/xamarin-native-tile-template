@@ -1,0 +1,16 @@
+[submodule "platform-core"]
+	path = platform-core
+	url = https://github.com/moduware/platform-core.git
+	branch = develop
+[submodule "csharp-moduware-communication-protocol"]
+	path = csharp-moduware-communication-protocol
+	url = https://github.com/moduware/csharp-moduware-communication-protocol.git
+	branch = master
+[submodule "csharp-moduware-shared"]
+	path = csharp-moduware-shared
+	url = https://github.com/moduware/csharp-moduware-shared.git
+	branch = master
+[submodule "assassin-event-system"]
+	path = assassin-event-system
+	url = https://github.com/moduware/assassin-event-system.git
+	branch = develop

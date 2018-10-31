@@ -6,9 +6,6 @@ using Serilog;
 using System.Threading.Tasks;
 using Android.Content;
 using System;
-using Moduware.Platform.Tile.Droid;
-using Moduware.Platform.Core.CommonTypes;
-using Moduware.Platform.Core.EventArguments;
 using System.Collections.Generic;
 using TileTemplate.Shared;
 using System.Drawing;
@@ -18,7 +15,7 @@ namespace TileTemplate.Droid
 {
     [Activity(Label = "Tile template", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleInstance)]
     [IntentFilter(new [] { "android.intent.action.VIEW" }, DataScheme = "moduware.tile.template", Categories = new [] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
-    public class MainActivity : TileActivity, INative
+    public class MainActivity : Activity
     {
         private SharedLogic _tile;
 
@@ -28,20 +25,84 @@ namespace TileTemplate.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            // We need assign Id of our tile here, it is required for proper Dashboard - Tile communication
-            TileId = SharedLogic.TileId;
-
-            // Logger to output messages from PlatformCore to console
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.AndroidLog()
-                .CreateLogger();
-
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            CoreReady += CoreReadyHandler;
-
             SetupUiListeners();
+
+            _tile = new SharedLogic();
+
+            // on launch
+            //Task.Run(() => Initialize(Intent));
+            Task.Run(async () =>
+            {
+                if (Intent.Data == null)
+                {
+                    await ShowAlertAsync("Warning", "Please launch the tile from Moduware app", "Ok");
+                    OpenDashboard(); // open Moduware app
+                }
+                else
+                {
+                    await ShowAlertAsync("Yay", "I love your start intentions!", "Ok");
+                    _tile.SetArguments(Intent.Data.ToString());
+                }
+            });
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            // when tile already launched
+            //Task.Run(() => Initialize(intent));
+            Task.Run(async () =>
+            {
+                if (intent.Data != null)
+                {
+                    await ShowAlertAsync("Ohh", "Why are you changing your intentions?", "Ok");
+                    _tile.SetArguments(intent.Data.ToString());
+                }
+            });
+        }
+
+        //private async Task Initialize(Intent intent)
+        //{
+        //    if (intent.Data == null)
+        //    {
+        //        await ShowAlertAsync("Warning", "Please launch the tile from Moduware app", "Ok");
+        //        OpenDashboard(); // open Moduware app
+        //    } else
+        //    {
+        //        await ShowAlertAsync("Yay", "I love your intentions!", "Ok");
+        //    }
+        //}
+
+        public Task ShowAlertAsync(string title, string message, string buttonText)
+        {
+            var t = new TaskCompletionSource<bool>();
+
+            int DialogsTheme = 5;
+            var DialogBuilder = new AlertDialog.Builder(this, DialogsTheme);
+            DialogBuilder.SetTitle(title);
+            DialogBuilder.SetMessage(message);
+            DialogBuilder.SetCancelable(false);
+            DialogBuilder.SetPositiveButton(buttonText, (sender, e) => {
+                t.TrySetResult(true);
+            });
+
+            (this as Activity).RunOnUiThread(action: () => {
+                var AlertDialog = DialogBuilder.Create();
+                AlertDialog.Show();
+            });
+
+            return t.Task;
+        }
+
+        public void OpenDashboard()
+        {
+            Intent intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("moduware.application.dashboard://"));
+            intent.AddFlags(ActivityFlags.NewTask);
+            StartActivity(intent);
         }
 
         private void SetupUiListeners()
@@ -51,13 +112,13 @@ namespace TileTemplate.Droid
             ConfigButton.Click += ConfigButtonClickHandler;
 
             var DashboardButton = FindViewById<Button>(Resource.Id.button2);
-            DashboardButton.Click += (s, e) => Utilities.OpenDashboard();
+            //DashboardButton.Click += (s, e) => Utilities.OpenDashboard();
         }
 
         private void CoreReadyHandler(Object source, EventArgs e)
         {
             // When core is ready initialising our logic
-            _tile = new SharedLogic(Core, this); 
+            //_tile = new SharedLogic(Core, this); 
         }
 
         private Color GetColorFromUi()
