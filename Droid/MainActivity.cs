@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using TileTemplate.Shared;
 using System.Drawing;
-using TileTemplate.Shared.Events;
 using AssassinEventSystem;
 
 namespace TileTemplate.Droid
@@ -20,35 +19,24 @@ namespace TileTemplate.Droid
     {
         private SharedLogic _tile;
 
-        public event EventHandler<ColorConfigButtonClickEventArgs> ColorConfigButtonClicked = delegate { };
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // start logging
-            var Prefix = "[TileTemplate]";
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.AndroidLog()
-                .CreateLogger();
-
-            Assassin.Error += (s, e) => Log.Error($"{Prefix} Error: {e.Message}");
-            Assassin.Warning += (s, e) => Log.Warning($"{Prefix} Warning: {e.Message}");
-            Assassin.Information += (s, e) => Log.Information($"{Prefix} Information: {e.Message}");
-            Assassin.Notification += (s, e) => Log.Information($"{Prefix} Notification: {e.Message}");
-
-            Assassin.RaiseNotification("Logging started");
+            StartLogging();
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            // Binding handlers to UI elements
             SetupUiListeners();
 
+            // Initializing tile logic and utils
             TileUtilities.SetImplemenation(new AndroidTileUtilities(this));
             _tile = new SharedLogic();
 
             // on launch
-            //Task.Run(() => Initialize(Intent));
             Task.Run(async () =>
             {
                 if (Intent.Data == null)
@@ -79,9 +67,11 @@ namespace TileTemplate.Droid
 
             Task.Run(async () =>
             {
+                // Assigning tile arguments, they can replace previously assigned arguments
+                // so that tile can be retargeted
                 if (intent.Data != null)
                 {
-                    await TileUtilities.ShowAlertAsync("Ohh", "Why are you changing your intentions?", "Ok");
+                    //await TileUtilities.ShowAlertAsync("Ohh", "Why are you changing your intentions?", "Ok");
                     _tile.SetArguments(intent.Data.ToString());
                     if (!_tile.IsConnected)
                     {
@@ -97,6 +87,21 @@ namespace TileTemplate.Droid
             });
         }
 
+        private void StartLogging()
+        {
+            var Prefix = "[TileTemplate]";
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.AndroidLog()
+                .CreateLogger();
+
+            Assassin.Error += (s, e) => Log.Error($"{Prefix} Error: {e.Message}");
+            Assassin.Warning += (s, e) => Log.Warning($"{Prefix} Warning: {e.Message}");
+            Assassin.Information += (s, e) => Log.Information($"{Prefix} Information: {e.Message}");
+            Assassin.Notification += (s, e) => Log.Information($"{Prefix} Notification: {e.Message}");
+
+            Assassin.RaiseNotification("Logging started");
+        }
+
         private void SetupUiListeners()
         {
             // Binding handlers to UI elements
@@ -104,33 +109,21 @@ namespace TileTemplate.Droid
             ConfigButton.Click += ConfigButtonClickHandler;
 
             var DashboardButton = FindViewById<Button>(Resource.Id.button2);
-            //DashboardButton.Click += (s, e) => Utilities.OpenDashboard();
+            DashboardButton.Click += (s, e) => TileUtilities.OpenDashboard();
         }
 
-        private Color GetColorFromUi()
+        private async void ConfigButtonClickHandler(Object source, EventArgs e)
         {
-            var RedEditbox = FindViewById<EditText>(Resource.Id.editText1);
-            var GreenEditbox = FindViewById<EditText>(Resource.Id.editText2);
-            var BlueEditbox = FindViewById<EditText>(Resource.Id.editText3);
+            var r = int.Parse(FindViewById<EditText>(Resource.Id.editText1).Text);
+            var g = int.Parse(FindViewById<EditText>(Resource.Id.editText2).Text);
+            var b = int.Parse(FindViewById<EditText>(Resource.Id.editText3).Text);
 
-            // getting color
-            var RedNumber = int.Parse(RedEditbox.Text);
-            var GreenNumber = int.Parse(GreenEditbox.Text);
-            var BlueNumber = int.Parse(BlueEditbox.Text);
-
-            var color = Color.FromArgb(RedNumber, GreenNumber, BlueNumber);
-            return color;
-        }
-
-        private void ConfigButtonClickHandler(Object source, EventArgs e)
-        {
-            var color = GetColorFromUi();
-            ColorConfigButtonClicked(this, new ColorConfigButtonClickEventArgs
+            if (!_tile.HasArguments || !_tile.IsConnected)
             {
-                Red = color.R,
-                Green = color.G,
-                Blue = color.B
-            });
+                throw new Exception("Cannot send command to module as there are no connection or tile arguments");
+            }
+
+            await _tile.SetColorInRgb(r, g, b);
         }
     }
 }

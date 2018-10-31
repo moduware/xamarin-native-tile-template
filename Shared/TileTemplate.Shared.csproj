@@ -35,8 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Events\ColorConfigButtonClickEventArgs.cs" />
-    <Compile Include="INative.cs" />
     <Compile Include="ITileUtilities.cs" />
     <Compile Include="SharedLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
