@@ -48,17 +48,11 @@ namespace TileTemplate.Droid
                 {
                     await TileUtilities.ShowAlertAsync("Yay", "I love your start intentions!", "Ok");
                     _tile.SetArguments(Intent.Data.ToString());
-                    if(!_tile.IsConnected)
-                    {
-                        await _tile.FindConnectedGateway();
-                    }
+                    // looking for connected gateway
+                    await _tile.FindConnectedGateway();
+                    
                 }
             });
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
         }
 
         protected override void OnNewIntent(Intent intent)
