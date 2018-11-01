@@ -29,28 +29,15 @@ namespace TileTemplate.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-            
-        }
-
-        private Tuple<int, int, int> GetColorFromUi()
-        {
-            var RedNumber = int.Parse(RedColor.Text);
-            var GreenNumber = int.Parse(GreenColor.Text);
-            var BlueNumber = int.Parse(BlueColor.Text);
-
-            return new Tuple<int, int, int>(RedNumber, GreenNumber, BlueNumber);
         }
 
         partial void SetColorButton_TouchUpInside(UIButton sender)
         {
-            var color = GetColorFromUi();
-            //ColorConfigButtonClicked(this, new ColorConfigButtonClickEventArgs
-            //{
-            //    Red = color.Item1,
-            //    Green = color.Item2,
-            //    Blue = color.Item3
-            //});
+            var r = int.Parse(RedColor.Text);
+            var g = int.Parse(GreenColor.Text);
+            var b = int.Parse(BlueColor.Text);
+
+            _tile.SetColorInRgb(r, g, b).Wait();
         }
     }
 }
