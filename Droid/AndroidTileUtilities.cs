@@ -17,6 +17,8 @@ namespace TileTemplate.Droid
     {
         private Context _context;
 
+        public TilePlatform Platform => TilePlatform.Android;
+
         public AndroidTileUtilities(Context context)
         {
             _context = context;

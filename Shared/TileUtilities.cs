@@ -8,6 +8,13 @@ namespace TileTemplate.Shared
 {
     public static class TileUtilities
     {
+        public static TilePlatform Platform {
+            get
+            {
+                CheckImplementation();
+                return _tileUtilitiesImplementation.Platform;
+            }
+        }
         private static ITileUtilities _tileUtilitiesImplementation;
 
         public static void SetImplemenation(ITileUtilities implementation)

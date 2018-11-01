@@ -13,6 +13,8 @@ namespace TileTemplate.iOS
     {
         Action<Action> _runOnUIThread;
 
+        public TilePlatform Platform => TilePlatform.iOS;
+
         public IosTileUtilities(Action<Action> runOnUiThread)
         {
             _runOnUIThread = runOnUiThread;
