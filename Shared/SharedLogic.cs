@@ -96,7 +96,8 @@ namespace TileTemplate.Shared
             
             foreach (var device in connectedDevices)
             {
-                if(device.State == DeviceState.Connected || device.State == DeviceState.Limited)
+                if(TileUtilities.Platform == TilePlatform.iOS || // on iOS all devices in list are connected
+                    (device.State == DeviceState.Connected || device.State == DeviceState.Limited))
                 {
                     // converting listed device to connected with services
                     _gatewayDevice = await _bluetoothAdapter.ConnectToKnownDeviceAsync(device.Id);
