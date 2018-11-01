@@ -37,7 +37,7 @@ namespace TileTemplate.iOS
             var g = int.Parse(GreenColor.Text);
             var b = int.Parse(BlueColor.Text);
 
-            _tile.SetColorInRgb(r, g, b).Wait();
+            _tile.SetColorInRgb(r, g, b);
         }
     }
 }
