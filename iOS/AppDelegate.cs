@@ -1,6 +1,8 @@
-﻿using Foundation;
-using Moduware.Platform.Tile.iOS;
+﻿using AssassinEventSystem;
+using Foundation;
 using Serilog;
+using System.Threading.Tasks;
+using TileTemplate.Shared;
 using UIKit;
 
 namespace TileTemplate.iOS
@@ -11,6 +13,8 @@ namespace TileTemplate.iOS
     public class AppDelegate : UIApplicationDelegate
     {
         // class-level declarations
+        private string _query = null;
+        private SharedLogic _tile;
 
         public override UIWindow Window
         {
@@ -20,16 +24,15 @@ namespace TileTemplate.iOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
-            // Enabling logging
-            Log.Logger = new LoggerConfiguration()
-            .WriteTo.NSLog()
-            .CreateLogger();
+            // start logging
+            StartLogging();
 
             // create a new window instance based on the screen size
             Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
             // If you have defined a root view controller, set it here:
             Window.RootViewController = new RootViewController();
+            _tile = (Window.RootViewController as RootViewController).Tile;
 
             // make the window visible
             Window.MakeKeyAndVisible();
@@ -40,8 +43,9 @@ namespace TileTemplate.iOS
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
             // custom stuff here using different properties of the url passed in
-            var viewController = (TileViewController)Window.RootViewController;
-            viewController.OnQueryRecieved(url.AbsoluteString);
+            //var viewController = (RootViewController)Window.RootViewController;
+            //viewController.OnQueryRecieved(url.AbsoluteString);
+            _query = url.AbsoluteString;
 
             return true;
         }
@@ -68,15 +72,46 @@ namespace TileTemplate.iOS
 
         public override void OnActivated(UIApplication application)
         {
+            Task.Run(async () =>
+            {
+                if(!_tile.HasArguments && _query == null)
+                {
+                    await TileUtilities.ShowAlertAsync("Warning", "Please launch the tile from Moduware app", "Ok");
+                    TileUtilities.OpenDashboard(); // open Moduware app
+                }
+                else if(_query != null)
+                {
+                    await TileUtilities.ShowAlertAsync("Yay", "I love your intentions!", "Ok");
+                    _tile.SetArguments(_query);
+                    _query = null;
+                    // looking for connected gateway
+                    //await _tile.FindConnectedGateway();
+                }
+            });
             // Restart any tasks that were paused (or not yet started) while the application was inactive. 
             // If the application was previously in the background, optionally refresh the user interface.
-            var viewController = (TileViewController)Window.RootViewController;
-            viewController.OnResumeActions();
+            //var viewController = (RootViewController)Window.RootViewController;
+            //viewController.OnResumeActions();
         }
 
         public override void WillTerminate(UIApplication application)
         {
             // Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
+        }
+
+        private void StartLogging()
+        {
+            var Prefix = "[TileTemplate]";
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.NSLog()
+                .CreateLogger();
+
+            Assassin.Error += (s, e) => Log.Error($"{Prefix} Error: {e.Message}");
+            Assassin.Warning += (s, e) => Log.Warning($"{Prefix} Warning: {e.Message}");
+            Assassin.Information += (s, e) => Log.Information($"{Prefix} Information: {e.Message}");
+            Assassin.Notification += (s, e) => Log.Information($"{Prefix} Notification: {e.Message}");
+
+            Assassin.RaiseNotification("Logging started");
         }
     }
 }
