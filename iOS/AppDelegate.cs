@@ -85,7 +85,10 @@ namespace TileTemplate.iOS
                     _tile.SetArguments(_query);
                     _query = null;
                     // looking for connected gateway
-                    //await _tile.FindConnectedGateway();
+                    if(!_tile.IsConnected)
+                    {
+                        await _tile.FindConnectedGateway();
+                    }
                 }
             });
             // Restart any tasks that were paused (or not yet started) while the application was inactive. 
