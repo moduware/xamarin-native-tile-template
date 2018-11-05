@@ -39,14 +39,15 @@ namespace TileTemplate.Droid
             // on launch
             Task.Run(async () =>
             {
+                // If no arguments provided on startup rerouting to Moduware app
                 if (Intent.Data == null)
                 {
                     await TileUtilities.ShowAlertAsync("Warning", "Please launch the tile from Moduware app", "Ok");
                     TileUtilities.OpenDashboard(); // open Moduware app
-                }
+                } // otherwise assigning these arguments and looking for connected gateway
                 else
                 {
-                    await TileUtilities.ShowAlertAsync("Yay", "I love your start intentions!", "Ok");
+                    //await TileUtilities.ShowAlertAsync("Yay", "I love your start intentions!", "Ok");
                     _tile.SetArguments(Intent.Data.ToString());
                     // looking for connected gateway
                     await _tile.FindConnectedGateway();
@@ -67,6 +68,8 @@ namespace TileTemplate.Droid
                 {
                     //await TileUtilities.ShowAlertAsync("Ohh", "Why are you changing your intentions?", "Ok");
                     _tile.SetArguments(intent.Data.ToString());
+
+                    // if arguments were changed and we are not connected lets look for connected gateway
                     if (!_tile.IsConnected)
                     {
                         await _tile.FindConnectedGateway();
@@ -106,17 +109,22 @@ namespace TileTemplate.Droid
             DashboardButton.Click += (s, e) => TileUtilities.OpenDashboard();
         }
 
-        private async void ConfigButtonClickHandler(Object source, EventArgs e)
+        private async void ConfigButtonClickHandler(object source, EventArgs e)
         {
+            // Parsing values from UI
+            // FIXME: no empty line check, what can cause exception or crash
             var r = int.Parse(FindViewById<EditText>(Resource.Id.editText1).Text);
             var g = int.Parse(FindViewById<EditText>(Resource.Id.editText2).Text);
             var b = int.Parse(FindViewById<EditText>(Resource.Id.editText3).Text);
 
+            // last check, if user made it to this place and we have no arguments or connection
+            // something is wrong with our workflow
             if (!_tile.HasArguments || !_tile.IsConnected)
             {
                 throw new Exception("Cannot send command to module as there are no connection or tile arguments");
             }
 
+            // Sending command to module
             await _tile.SetColorInRgb(r, g, b);
         }
     }
