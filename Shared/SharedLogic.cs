@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -133,6 +134,12 @@ namespace TileTemplate.Shared
                     await TileUtilities.ShowAlertAsync("Module plugged out", "Target module was plugged out, please reopen the tile from Moduware app", "Ok");
                     TileUtilities.OpenDashboard();
                 }
+            } // listening for disconnect broadcast message. 
+            // (Dirty trick to disconnect all native tiles. Sending bad 4444 command from dashboard, all native tiles will get bad command response with 4444 as data)
+            else if(message.Source == ProtocolMessageAddress.Gateway && 
+                message.Type.Equals(ProtocolMessageType.Product.CannotParseTheCommand) && message.Data.SequenceEqual(new byte[] { 0x44, 0x44 }))
+            {
+                await _bluetoothAdapter.DisconnectDeviceAsync(_gatewayDevice);
             }
         }
 
