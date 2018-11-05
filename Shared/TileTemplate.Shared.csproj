@@ -95,11 +95,11 @@
       <Project>{D02C67B5-D12B-477A-84F3-67AC4438D945}</Project>
       <Name>Moduware.Platform.Core.CommunicationProtocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\platform-core\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj">
-      <Project>{E07D3348-1F73-456F-BAE4-B106DE10BFDE}</Project>
+    <ProjectReference Include="..\csharp-moduware-connection\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj">
+      <Project>{e07d3348-1f73-456f-bae4-b106de10bfde}</Project>
       <Name>Moduware.Platform.Core.Connection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\platform-core\Moduware.Platform.Core.ModuleDriverSystem\Moduware.Platform.Core.ModuleDriverSystem.csproj">
+    <ProjectReference Include="..\csharp-moduware-module-driver-system\Moduware.Platform.Core.ModuleDriverSystem\Moduware.Platform.Core.ModuleDriverSystem.csproj">
       <Project>{cc5f9c4d-19b0-489f-8b72-e90da017b4c0}</Project>
       <Name>Moduware.Platform.Core.ModuleDriverSystem</Name>
     </ProjectReference>

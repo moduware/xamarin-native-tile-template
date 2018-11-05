@@ -19,9 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.Shar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.CommunicationProtocol", "csharp-moduware-communication-protocol\Moduware.Platform.Core.CommunicationProtocol\Moduware.Platform.Core.CommunicationProtocol.csproj", "{D02C67B5-D12B-477A-84F3-67AC4438D945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.Connection", "platform-core\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj", "{E07D3348-1F73-456F-BAE4-B106DE10BFDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.Connection", "csharp-moduware-connection\Moduware.Platform.Core.Connection\Moduware.Platform.Core.Connection.csproj", "{E07D3348-1F73-456F-BAE4-B106DE10BFDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.ModuleDriverSystem", "platform-core\Moduware.Platform.Core.ModuleDriverSystem\Moduware.Platform.Core.ModuleDriverSystem.csproj", "{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moduware.Platform.Core.ModuleDriverSystem", "csharp-moduware-module-driver-system\Moduware.Platform.Core.ModuleDriverSystem\Moduware.Platform.Core.ModuleDriverSystem.csproj", "{CC5F9C4D-19B0-489F-8B72-E90DA017B4C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
