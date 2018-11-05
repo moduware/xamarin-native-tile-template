@@ -10,20 +10,11 @@ namespace TileTemplate.iOS
 {
     public partial class RootViewController : UIViewController
     {
-        private SharedLogic _tile;
-
-        public SharedLogic Tile => _tile;
+        public SharedLogic Tile { get; }
 
         public RootViewController() {
             TileUtilities.SetImplemenation(new IosTileUtilities(InvokeOnMainThread));
-            _tile = new SharedLogic();
-        }
-
-        public override void DidReceiveMemoryWarning()
-        {
-            base.DidReceiveMemoryWarning();
-
-            // Release any cached data, images, etc that aren't in use.
+            Tile = new SharedLogic();
         }
 
         public override void ViewDidLoad()
@@ -33,11 +24,14 @@ namespace TileTemplate.iOS
 
         partial void SetColorButton_TouchUpInside(UIButton sender)
         {
+            // Parsing values from UI
+            // FIXME: no empty line check, what can cause exception or crash
             var r = int.Parse(RedColor.Text);
             var g = int.Parse(GreenColor.Text);
             var b = int.Parse(BlueColor.Text);
 
-            _tile.SetColorInRgb(r, g, b);
+            // Sending command to module
+            Tile.SetColorInRgb(r, g, b);
         }
     }
 }
