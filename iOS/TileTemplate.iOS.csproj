@@ -109,6 +109,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AssassinEventSystem, Version=1.0.6883.27795, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AssassinEventSystem.1.0.6883.27795\lib\portable45-net45+win8+wpa81\AssassinEventSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Flurl, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Flurl.2.5.0\lib\netstandard1.3\Flurl.dll</HintPath>
     </Reference>
@@ -167,10 +170,6 @@
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\assassin-event-system\AssassinEventSystem\AssassinEventSystem.csproj">
-      <Project>{7b328ddc-4013-4176-9954-3f410251ec88}</Project>
-      <Name>AssassinEventSystem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Shared\TileTemplate.Shared.csproj">
       <Project>{1ea1b4c4-264c-42ec-a7e9-1b2c8d74016a}</Project>
       <Name>TileTemplate.Shared</Name>
