@@ -9,17 +9,37 @@ using UIKit;
 
 namespace TileTemplate.iOS
 {
+    /// <summary>
+    /// iOS implementation of Tile Utilities
+    /// </summary>
     public class IosTileUtilities : ITileUtilities
     {
-        Action<Action> _runOnUIThread;
-
-        public TilePlatform Platform => TilePlatform.iOS;
-
+        #region Public Constructors
+        /// <summary>
+        /// Ctor for ios tile utilities
+        /// </summary>
+        /// <param name="runOnUiThread">Activity to run code on a UI thread</param>
         public IosTileUtilities(Action<Action> runOnUiThread)
         {
             _runOnUIThread = runOnUiThread;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Platform this tile runs on
+        /// </summary>
+        public TilePlatform Platform => TilePlatform.iOS;
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Simple dialog builder
+        /// </summary>
+        /// <param name="title">Dialog title</param>
+        /// <param name="message">Dialog message</param>
+        /// <param name="buttonText">Dialog button text</param>
+        /// <returns></returns>
         public Task ShowAlertAsync(string title, string message, string buttonText)
         {
             var t = new TaskCompletionSource<bool>();
@@ -37,6 +57,9 @@ namespace TileTemplate.iOS
             return t.Task;
         }
 
+        /// <summary>
+        /// Opens Moduware dashboard app
+        /// </summary>
         public void OpenDashboard()
         {
             var url = "moduware.application.dashboard://";
@@ -48,5 +71,11 @@ namespace TileTemplate.iOS
                 }
             });
         }
+        #endregion
+
+        #region Private Fields
+        private Action<Action> _runOnUIThread;
+        #endregion
+        
     }
 }

@@ -13,17 +13,37 @@ using TileTemplate.Shared;
 
 namespace TileTemplate.Droid
 {
+    /// <summary>
+    /// Android implementation of Tile Utilities
+    /// </summary>
     public class AndroidTileUtilities : ITileUtilities
     {
-        private Context _context;
-
-        public TilePlatform Platform => TilePlatform.Android;
-
+        #region Public Constructors
+        /// <summary>
+        /// Ctor for android tile utilities
+        /// </summary>
+        /// <param name="context">Android activity context</param>
         public AndroidTileUtilities(Context context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Platform this tile runs on
+        /// </summary>
+        public TilePlatform Platform => TilePlatform.Android;
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Simple dialog builder
+        /// </summary>
+        /// <param name="title">Dialog title</param>
+        /// <param name="message">Dialog message</param>
+        /// <param name="buttonText">Dialog button text</param>
+        /// <returns></returns>
         public Task ShowAlertAsync(string title, string message, string buttonText)
         {
             var t = new TaskCompletionSource<bool>();
@@ -45,11 +65,19 @@ namespace TileTemplate.Droid
             return t.Task;
         }
 
+        /// <summary>
+        /// Opens Moduware dashboard app
+        /// </summary>
         public void OpenDashboard()
         {
             Intent intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("moduware.application.dashboard://"));
             intent.AddFlags(ActivityFlags.NewTask);
             _context.StartActivity(intent);
         }
+        #endregion
+
+        #region Private Fields
+        private Context _context;
+        #endregion
     }
 }
