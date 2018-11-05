@@ -34,6 +34,7 @@ namespace TileTemplate.Shared
 
         public SharedLogic()
         {
+            // Loading driver to work with LED module (moduware.module.led)
             LoadDriver();
             _bluetoothAdapter = CrossBluetoothLE.Current.Adapter;
             // tracking disconnect event
@@ -60,17 +61,32 @@ namespace TileTemplate.Shared
             };
         }
 
+        /// <summary>
+        /// Loads driver.json from local tile resources
+        /// </summary>
         private void LoadDriver()
         {
+            // taking file from the app resources
             var assembly = typeof(SharedLogic).GetTypeInfo().Assembly;
             Stream stream = assembly.GetManifestResourceStream("TileTemplate.Shared." + "driver.json");
+
+            // loading JSON string
             var driverJson = new StreamReader(stream).ReadToEnd();
 
+            // deserializing driver from JSON
             _driver = DriverController.Deserialize(driverJson);
         }
 
+        /// <summary>
+        /// Sends RGB color configuration command to module
+        /// </summary>
+        /// <param name="r">Red</param>
+        /// <param name="g">Green</param>
+        /// <param name="b">Blue</param>
+        /// <returns></returns>
         public async Task SetColorInRgb(int r, int g, int b)
         {
+            // int of target slot
             var slot = int.Parse(_arguments.Slot);
             // sending command without driver
             //var message = ProtocolMessage.Create(new PhoneToModuleStrategy(slot), new ProtocolMessageType("2702"), new[] { (byte)r, (byte)g, (byte)b });
@@ -79,6 +95,10 @@ namespace TileTemplate.Shared
             await _connection.Send(message);
         }
 
+        /// <summary>
+        /// Assign arguments to the tile
+        /// </summary>
+        /// <param name="queryUrl">url query with args parameter that contains JSOn serialized arguments</param>
         public void SetArguments(string queryUrl)
         {
             var url = new Url(queryUrl);
@@ -87,6 +107,10 @@ namespace TileTemplate.Shared
             _arguments = arguments;
         }
 
+        /// <summary>
+        /// Finds connected gateway
+        /// </summary>
+        /// <returns></returns>
         public async Task FindConnectedGateway()
         {
             // Finding gateway among connected devices
@@ -141,8 +165,12 @@ namespace TileTemplate.Shared
             {
                 await _bluetoothAdapter.DisconnectDeviceAsync(_gatewayDevice);
             }
+
+            // If you are waiting for any messages from module (those not triggered by your requests)
+            // this is best place to track them
         }
 
+        // Restoring initial state of the tile
         private void ResetTile()
         {
             _arguments = null;
