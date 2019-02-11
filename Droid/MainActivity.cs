@@ -84,6 +84,13 @@ namespace TileTemplate.Droid
             });
         }
 
+        protected override void OnDestroy()
+        {
+            FinishAffinity();
+            base.OnDestroy();
+            Process.KillProcess(Process.MyPid());
+        }
+
         private void StartLogging()
         {
             var Prefix = "[TileTemplate]";
